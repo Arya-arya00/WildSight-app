@@ -24,13 +24,6 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>识野需要从相册选择图片或视频，用来识别和记录你遇见的生命。</string>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>识野需要连接本机开发服务，用来调试图片识别能力。</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UISupportedInterfaceOrientations</key>
