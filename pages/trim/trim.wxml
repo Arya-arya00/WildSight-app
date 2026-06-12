@@ -1,0 +1,20 @@
+<view class="page trim-page">
+  <view class="nav-title">选一段 10 秒片段</view>
+  <view class="subtle intro">视频超过 10 秒，先截取最适合识别的一小段。</view>
+
+  <view class="video-card">
+    <video class="video" src="{{path}}" controls object-fit="cover"></video>
+    <view class="duration-pill">原视频 {{duration}}s</view>
+  </view>
+
+  <view class="timeline panel">
+    <view class="timeline-head">
+      <text>起点 {{start}}s</text>
+      <text>终点 {{end}}s</text>
+    </view>
+    <slider min="0" max="{{maxStart}}" step="1" value="{{start}}" activeColor="#202421" backgroundColor="#d8cbc0" block-color="#202421" bindchange="onSlide" />
+    <view class="subtle">默认选择前 10 秒；第一版先保存片段参数，后续接真实裁剪能力。</view>
+  </view>
+
+  <button class="primary" bindtap="useClip">使用这 10 秒识别</button>
+</view>

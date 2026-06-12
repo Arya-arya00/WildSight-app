@@ -1,0 +1,31 @@
+<view class="page library-page">
+  <view class="shelf-head">
+    <view>
+      <view class="nav-title">奇遇图鉴</view>
+      <view class="subtle">每一次遇见，都会变成一张小卡。</view>
+    </view>
+    <button class="ghost manage">管理</button>
+  </view>
+
+  <view class="grid">
+    <block wx:for="{{records}}" wx:key="id">
+      <view class="card panel" bindtap="openDetail" data-id="{{item.id}}">
+        <view class="doodle card-art">
+          <text class="spark">✦</text>
+          <view class="sticker turtle">
+            <view class="face"></view>
+            <view class="smile"></view>
+          </view>
+          <text class="spark two">✿</text>
+        </view>
+        <view class="card-name">{{item.name}}</view>
+        <view class="card-meta">{{item.location}} · {{item.time}} · {{item.mediaLabel}}</view>
+        <view class="tags">
+          <block wx:for="{{item.tags}}" wx:key="*this">
+            <text class="tag">{{item}}</text>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

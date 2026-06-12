@@ -1,0 +1,1361 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>海底识图小程序 MVP 原型</title>
+  <style>
+    :root {
+      --ink: #202421;
+      --soft-ink: #646a63;
+      --faint: #9aa098;
+      --paper: #fbfaf5;
+      --card: #fffef9;
+      --line: #e7e1d7;
+      --deep: #173f42;
+      --sea: #7fb6b1;
+      --mint: #e4f1ec;
+      --sand: #efe3d0;
+      --shell: #efc8b7;
+      --shadow: 0 28px 70px rgba(37, 44, 39, .15);
+      --lift: 0 14px 32px rgba(37, 44, 39, .09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    button:active {
+      transform: scale(.98);
+    }
+
+    .specimen-card,
+    .result-card,
+    .upload-plate {
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 8%, rgba(239, 200, 183, .34), transparent 27%),
+        radial-gradient(circle at 86% 12%, rgba(127, 182, 177, .28), transparent 26%),
+        radial-gradient(circle at 50% 100%, rgba(231, 225, 215, .52), transparent 42%),
+        linear-gradient(135deg, #f6f1e8 0%, #fbfaf5 44%, #edf5f1 100%);
+    }
+
+    .page {
+      width: min(1480px, 100%);
+      margin: 0 auto;
+      padding: 38px 22px 52px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      margin: 0 0 9px;
+      font-size: 34px;
+      line-height: 1.12;
+      letter-spacing: 0;
+      font-weight: 850;
+    }
+
+    .intro p {
+      max-width: 760px;
+      margin: 0;
+      color: var(--soft-ink);
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 11px;
+      border: 1px solid rgba(32, 36, 33, .08);
+      border-radius: 999px;
+      background: rgba(255, 254, 249, .68);
+      box-shadow: 0 6px 18px rgba(37, 44, 39, .05);
+      color: var(--soft-ink);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      align-items: start;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 352px;
+      margin: 0 auto;
+      border: 1px solid rgba(255, 255, 255, .24);
+      border-radius: 38px;
+      padding: 10px;
+      background:
+        linear-gradient(145deg, #30322f, #161816 68%);
+      box-shadow: var(--shadow);
+    }
+
+    .screen {
+      min-height: 720px;
+      overflow: hidden;
+      border-radius: 29px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.5), transparent 22%),
+        var(--paper);
+      position: relative;
+    }
+
+    .screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(143, 53, 255, .06), transparent 19%),
+        radial-gradient(circle at 84% 72%, rgba(255, 173, 61, .08), transparent 21%);
+      opacity: .9;
+      pointer-events: none;
+    }
+
+    .status,
+    .nav,
+    .content,
+    .bottom-nav {
+      position: relative;
+      z-index: 1;
+    }
+
+    .status {
+      height: 28px;
+      padding: 9px 18px 0;
+      display: flex;
+      justify-content: space-between;
+      color: rgba(32, 36, 33, .46);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mini-icons {
+      display: flex;
+      gap: 4px;
+    }
+
+    .mini-icons span {
+      width: 13px;
+      height: 8px;
+      border: 1.4px solid currentColor;
+      border-radius: 3px;
+      display: block;
+    }
+
+    .nav {
+      height: 46px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 760;
+    }
+
+    .nav small {
+      color: var(--faint);
+      font-size: 12px;
+      font-weight: 660;
+    }
+
+    .icon-button {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(32, 36, 33, .06);
+      position: relative;
+    }
+
+    .dots::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 15px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--ink);
+      box-shadow: 7px 0 0 var(--ink), 14px 0 0 var(--ink);
+    }
+
+    .content {
+      padding: 8px 18px 88px;
+    }
+
+    .screen-progress {
+      display: none;
+    }
+
+    .screen-progress span { display: none; }
+
+    .screen-progress .p20 { width: 20%; }
+    .screen-progress .p40 { width: 40%; }
+    .screen-progress .p65 { width: 65%; }
+    .screen-progress .p100 { width: 100%; }
+
+    .upload-stage {
+      min-height: 510px;
+      display: grid;
+      align-content: center;
+      gap: 20px;
+    }
+
+    .upload-plate {
+      min-height: 330px;
+      padding: 26px 22px;
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 50% 24%, rgba(255,255,255,.92), transparent 36%),
+        radial-gradient(circle at 22% 78%, rgba(239, 200, 183, .34), transparent 30%),
+        linear-gradient(180deg, #e5f1ed 0%, #fbfaf5 58%, #f0e4d1 100%);
+      border: 1px solid rgba(32, 36, 33, .07);
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      text-align: center;
+      box-shadow:
+        inset 0 -18px 38px rgba(150, 125, 90, .07),
+        var(--lift);
+    }
+
+    .upload-mark {
+      width: 118px;
+      height: 118px;
+      margin-bottom: 26px;
+      border-radius: 38px;
+      background:
+        radial-gradient(circle at 63% 38%, rgba(255,255,255,.88) 0 8px, transparent 9px),
+        linear-gradient(145deg, #2f6670, #8fc5bd);
+      border: 2.5px solid rgba(32, 36, 33, .64);
+      position: relative;
+      transform: rotate(-4deg);
+      box-shadow:
+        0 14px 0 rgba(32, 36, 33, .06),
+        0 18px 30px rgba(47, 102, 112, .15);
+    }
+
+    .upload-mark::before {
+      content: "";
+      position: absolute;
+      width: 48px;
+      height: 42px;
+      left: 34px;
+      top: 39px;
+      border-radius: 16px;
+      border: 3px solid var(--paper);
+      background:
+        linear-gradient(135deg, transparent 46%, var(--paper) 47% 53%, transparent 54%),
+        linear-gradient(45deg, transparent 46%, var(--paper) 47% 53%, transparent 54%);
+    }
+
+    .upload-mark::after {
+      content: "";
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      right: -12px;
+      bottom: 8px;
+      border-radius: 50%;
+      background: var(--shell);
+      border: 2.5px solid rgba(32, 36, 33, .62);
+      box-shadow: inset 12px 0 0 rgba(255, 255, 255, .32);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.2;
+      letter-spacing: 0;
+      font-weight: 840;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+      letter-spacing: 0;
+      font-weight: 820;
+    }
+
+    .hint {
+      margin: 8px 0 0;
+      color: var(--soft-ink);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .primary {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fffef9;
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: 0 14px 26px rgba(32, 36, 33, .18);
+    }
+
+    .ghost {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 254, 249, .74);
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 740;
+    }
+
+    .action-sheet {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 4;
+      padding: 10px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, .96);
+      border: 1px solid rgba(32, 36, 33, .08);
+      box-shadow: 0 24px 48px rgba(32, 36, 33, .2);
+      backdrop-filter: blur(18px);
+    }
+
+    .sheet-title {
+      padding: 8px 12px 10px;
+      color: var(--faint);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .sheet-item {
+      width: 100%;
+      min-height: 48px;
+      border: 0;
+      border-radius: 18px;
+      background: #f3edf9;
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .sheet-cancel {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 8px;
+      border: 0;
+      border-radius: 17px;
+      background: transparent;
+      color: var(--soft-ink);
+      font-size: 14px;
+      font-weight: 740;
+    }
+
+    .trim-viewer {
+      height: 244px;
+      border-radius: 30px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 72% 20%, rgba(255, 255, 255, .62) 0 18px, transparent 19px),
+        radial-gradient(circle at 24% 68%, rgba(127, 182, 177, .38), transparent 24%),
+        linear-gradient(180deg, #4d8c94 0%, #183f48 68%, #d8c4a8 100%);
+      position: relative;
+      border: 1px solid rgba(32, 36, 33, .08);
+      box-shadow: var(--lift);
+    }
+
+    .trim-viewer::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 253, 248, .22);
+    }
+
+    .trim-label {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255, 254, 249, .86);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .timeline {
+      margin-top: 18px;
+      padding: 13px 12px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, .9);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(37, 44, 39, .06);
+    }
+
+    .track {
+      height: 44px;
+      border-radius: 12px;
+      background:
+        repeating-linear-gradient(90deg, #b8d7d4 0 16px, #eadbc7 16px 32px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .selection {
+      position: absolute;
+      left: 36%;
+      top: 0;
+      width: 34%;
+      height: 100%;
+      border: 3px solid var(--ink);
+      border-radius: 12px;
+      background: rgba(255, 254, 249, .28);
+      box-shadow: 0 0 0 999px rgba(32, 36, 33, .24);
+    }
+
+    .trim-copy {
+      margin: 10px 2px 0;
+      color: var(--soft-ink);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .timeline + .primary {
+      margin-top: 16px;
+    }
+
+    .hero-photo {
+      height: 178px;
+      border-radius: 28px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255, 255, 255, .9) 0 9px, transparent 10px),
+        radial-gradient(circle at 82% 18%, rgba(238, 190, 118, .48) 0 7px, transparent 8px),
+        linear-gradient(180deg, #dceee9, #fff5df);
+      position: relative;
+      border: 1px solid rgba(32, 36, 33, .08);
+      box-shadow: var(--lift);
+    }
+
+    .hero-photo::before {
+      content: "✦";
+      position: absolute;
+      left: 17px;
+      top: 18px;
+      width: 15px;
+      height: 15px;
+      color: #d8a75d;
+      font-size: 18px;
+    }
+
+    .hero-photo::after {
+      content: "✿";
+      position: absolute;
+      right: 18px;
+      bottom: 20px;
+      width: 15px;
+      height: 15px;
+      color: #7cadb8;
+      font-size: 18px;
+    }
+
+    .hero-photo .sticker.turtle {
+      left: 91px;
+      top: 53px;
+      transform: scale(1.05);
+      transform-origin: center;
+    }
+
+    .meta-bar {
+      min-height: 42px;
+      margin-top: 12px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .86);
+      border: 1px solid var(--line);
+      color: var(--soft-ink);
+      font-size: 12px;
+      box-shadow: 0 8px 22px rgba(37, 44, 39, .06);
+    }
+
+    .meta-items {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .meta-item {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pencil-button {
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(32, 36, 33, .06);
+      position: relative;
+    }
+
+    .pencil-button::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 7px;
+      width: 4px;
+      height: 15px;
+      border-radius: 3px;
+      background: var(--ink);
+      transform: rotate(42deg);
+    }
+
+    .pencil-button::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 19px;
+      width: 7px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--ink);
+      transform: rotate(42deg);
+    }
+
+    .auto-save {
+      margin: 12px 0 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--soft-ink);
+      font-size: 12px;
+    }
+
+    .auto-save b {
+      color: #45766c;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .result-card {
+      padding: 18px;
+      border-radius: 30px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.42), transparent 34%),
+        rgba(255, 255, 255, .92);
+      border: 1px solid rgba(32, 36, 33, .08);
+      box-shadow: var(--lift);
+    }
+
+    .detail-art {
+      height: 292px;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 17% 18%, rgba(255, 255, 255, .9) 0 12px, transparent 13px),
+        radial-gradient(circle at 82% 18%, rgba(238, 190, 118, .48) 0 8px, transparent 9px),
+        radial-gradient(circle at 28% 84%, rgba(127, 182, 177, .3), transparent 28%),
+        radial-gradient(circle at 78% 78%, rgba(255, 255, 255, .66) 0 18px, transparent 19px),
+        linear-gradient(180deg, #dceee9, #fff5df);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(32, 36, 33, .08);
+      box-shadow: var(--lift);
+    }
+
+    .detail-art .sticker.turtle {
+      left: 77px;
+      top: 92px;
+      transform: scale(1.58);
+      transform-origin: center;
+    }
+
+    .raw-media-chip {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 3;
+      min-height: 38px;
+      padding: 0 13px;
+      border: 0;
+      border-radius: 16px;
+      background: rgba(32, 32, 39, .86);
+      color: #fffef9;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: 0 10px 22px rgba(32, 36, 33, .2);
+      backdrop-filter: blur(10px);
+    }
+
+    .title-line {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .latin {
+      margin-top: 4px;
+      color: var(--faint);
+      font-size: 12px;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .editable {
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-decoration-color: rgba(32, 36, 33, .24);
+      text-underline-offset: 4px;
+    }
+
+    .editable:hover {
+      background: rgba(110, 174, 177, .1);
+    }
+
+    .confidence {
+      flex: 0 0 auto;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(48, 200, 115, .14);
+      color: #16884d;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .one-liner {
+      margin: 0 0 12px;
+      color: #3f3a34;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .compact-facts {
+      display: grid;
+      gap: 8px;
+    }
+
+    .fact {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px;
+      padding: 11px 0 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .fact b {
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .fact p {
+      margin: 0;
+      color: var(--soft-ink);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .shelf-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0 18px;
+    }
+
+    .shelf-title p {
+      margin: 5px 0 0;
+      color: var(--soft-ink);
+      font-size: 12px;
+    }
+
+    .collection {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .specimen-card {
+      min-height: 232px;
+      padding: 10px;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 20% 8%, rgba(255, 255, 255, .98), transparent 34%),
+        linear-gradient(180deg, #ffffff, #f6f0ff);
+      border: 1px solid rgba(32, 36, 33, .08);
+      box-shadow: 0 12px 26px rgba(37, 44, 39, .08);
+      cursor: pointer;
+    }
+
+    .specimen-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 32px rgba(37, 44, 39, .11);
+    }
+
+    .doodle {
+      height: 130px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255, 255, 255, .9) 0 8px, transparent 9px),
+        radial-gradient(circle at 82% 18%, rgba(255, 173, 61, .48) 0 6px, transparent 7px),
+        linear-gradient(180deg, #efe7ff, #fff7e6);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(32, 36, 33, .07);
+    }
+
+    .doodle::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 22% 80%, #84b8bb 0 2px, transparent 3px),
+        radial-gradient(circle at 82% 45%, #c99c74 0 2px, transparent 3px),
+        radial-gradient(circle at 34% 15%, #98a5cc 0 1.5px, transparent 2.5px);
+      opacity: .72;
+    }
+
+    .sticker,
+    .sticker::before,
+    .sticker::after {
+      position: absolute;
+      content: "";
+      z-index: 1;
+    }
+
+    .sticker {
+      filter: drop-shadow(0 8px 0 rgba(112, 88, 67, .07));
+    }
+
+    .face {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #302d2a;
+      box-shadow: 18px 0 0 #302d2a;
+      z-index: 3;
+    }
+
+    .smile {
+      position: absolute;
+      width: 15px;
+      height: 8px;
+      border-bottom: 2px solid rgba(48, 45, 42, .62);
+      border-radius: 50%;
+      z-index: 3;
+    }
+
+    .sticker.turtle {
+      width: 96px;
+      height: 74px;
+      left: 23px;
+      top: 30px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 34%, rgba(255, 255, 255, .28) 0 12px, transparent 13px),
+        linear-gradient(145deg, #7f9b68, #c7c0a0);
+      border: 3px solid rgba(85, 74, 62, .62);
+    }
+
+    .sticker.turtle::before {
+      width: 30px;
+      height: 24px;
+      right: -18px;
+      top: 22px;
+      border-radius: 50%;
+      background: #c9bfa1;
+      border: 3px solid rgba(85, 74, 62, .62);
+    }
+
+    .sticker.turtle::after {
+      width: 20px;
+      height: 18px;
+      left: 13px;
+      bottom: -8px;
+      border-radius: 50%;
+      background: #748c63;
+      box-shadow: 42px 0 0 #748c63;
+    }
+
+    .turtle .face {
+      right: -11px;
+      top: 31px;
+      transform: scale(.78);
+    }
+
+    .turtle .smile {
+      right: -2px;
+      top: 38px;
+      transform: scale(.78);
+    }
+
+    .sticker.ray {
+      width: 114px;
+      height: 74px;
+      left: 15px;
+      top: 30px;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .2) 0 9px, transparent 10px),
+        linear-gradient(145deg, #6e7dae, #bdd0ec);
+      border: 3px solid rgba(73, 72, 96, .62);
+      border-radius: 50% 50% 58% 58%;
+      clip-path: polygon(50% 0, 100% 42%, 70% 65%, 55% 82%, 50% 100%, 45% 82%, 30% 65%, 0 42%);
+    }
+
+    .sticker.ray::before {
+      width: 66px;
+      height: 3px;
+      left: 53px;
+      top: 68px;
+      border-radius: 999px;
+      background: rgba(73, 72, 96, .48);
+      transform: rotate(24deg);
+      transform-origin: left center;
+    }
+
+    .sticker.ray::after {
+      width: 5px;
+      height: 5px;
+      left: 42px;
+      top: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .7);
+      box-shadow: 20px -8px 0 rgba(255, 255, 255, .55), 38px 7px 0 rgba(255, 255, 255, .45);
+    }
+
+    .ray .face {
+      left: 45px;
+      top: 39px;
+    }
+
+    .ray .smile {
+      left: 50px;
+      top: 48px;
+    }
+
+    .sticker.fish {
+      width: 88px;
+      height: 50px;
+      left: 36px;
+      top: 43px;
+      border-radius: 55% 45% 45% 55%;
+      background:
+        radial-gradient(circle at 66% 22%, rgba(255, 255, 255, .35) 0 10px, transparent 11px),
+        linear-gradient(145deg, #efc366, #eaa084);
+      border: 3px solid rgba(95, 75, 62, .62);
+      transform: rotate(-5deg);
+    }
+
+    .sticker.fish::before {
+      width: 32px;
+      height: 34px;
+      left: -23px;
+      top: 8px;
+      background: #91a7d8;
+      border: 3px solid rgba(95, 75, 62, .62);
+      border-radius: 56% 44% 44% 56%;
+      clip-path: polygon(100% 50%, 0 0, 0 100%);
+    }
+
+    .sticker.fish::after {
+      width: 26px;
+      height: 20px;
+      left: 28px;
+      top: -13px;
+      border-radius: 50% 50% 0 0;
+      background: #f5d88a;
+      border: 3px solid rgba(95, 75, 62, .46);
+      border-bottom: 0;
+    }
+
+    .fish .face {
+      right: 17px;
+      top: 20px;
+      transform: scale(.8);
+    }
+
+    .fish .smile {
+      right: 18px;
+      top: 28px;
+      transform: scale(.76);
+    }
+
+    .spark {
+      position: absolute;
+      z-index: 2;
+      color: #d8a75d;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .spark.one {
+      left: 16px;
+      top: 17px;
+    }
+
+    .spark.two {
+      right: 17px;
+      bottom: 18px;
+      color: #7cadb8;
+    }
+
+    .specimen-card h3 {
+      margin: 11px 0 4px;
+      font-size: 15px;
+    }
+
+    .specimen-card p {
+      margin: 0;
+      color: var(--soft-ink);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 9px;
+    }
+
+    .mini-tag {
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(110, 174, 177, .15);
+      color: #426d70;
+      font-size: 11px;
+      font-weight: 760;
+    }
+
+    .empty-card {
+      min-height: 226px;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      border-radius: 26px;
+      border: 1.5px dashed #d6c8b6;
+      color: var(--faint);
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.55;
+      background: rgba(255, 254, 249, .48);
+    }
+
+    .bottom-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 10px 18px 18px;
+      border-top: 1px solid rgba(32, 36, 33, .06);
+      background: rgba(251, 250, 245, .84);
+      backdrop-filter: blur(14px);
+    }
+
+    .bottom-nav div {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      color: var(--faint);
+      font-size: 12px;
+      font-weight: 790;
+      border-radius: 999px;
+    }
+
+    .bottom-nav .on {
+      background: rgba(32, 36, 33, .075);
+      color: var(--ink);
+    }
+
+    .notes {
+      margin-top: 28px;
+      padding: 20px 22px;
+      border-radius: 26px;
+      background: rgba(255, 254, 249, .7);
+      border: 1px solid rgba(32, 36, 33, .08);
+      box-shadow: 0 16px 38px rgba(37, 44, 39, .06);
+    }
+
+    .notes h2 {
+      font-size: 20px;
+    }
+
+    .notes ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: var(--soft-ink);
+      line-height: 1.75;
+    }
+
+    @media (max-width: 980px) {
+      .intro {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="intro">
+      <div>
+        <h1>海底识图小程序 MVP 原型</h1>
+        <p>这一版按更轻的收藏册思路重排：从相册上传图片或视频后直接识别，结果自动进入图鉴；长视频先截取 10 秒片段，详情页以生成的手绘图鉴为主，原始照片/视频作为可查看证据。</p>
+      </div>
+      <div class="legend">
+        <span class="pill">微信小程序</span>
+        <span class="pill">自动保存</span>
+        <span class="pill">图片 / 短视频</span>
+        <span class="pill">海洋收藏册</span>
+      </div>
+    </section>
+
+    <section class="flow" aria-label="MVP 核心页面">
+      <article class="phone">
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <span class="mini-icons"><span></span><span></span></span>
+          </div>
+          <div class="nav">
+            <strong>海里见</strong>
+            <small>上传</small>
+          </div>
+          <div class="screen-progress"><span class="p20"></span></div>
+          <div class="content">
+            <div class="upload-stage">
+              <div class="upload-plate">
+                <div class="upload-mark"></div>
+                <h2>拍下海里的这一面</h2>
+                <p class="hint">上传图片或视频，识别海洋生物。</p>
+              </div>
+              <button class="primary">上传内容</button>
+            </div>
+          </div>
+          <div class="action-sheet">
+            <div class="sheet-title">选择上传内容</div>
+            <button class="sheet-item">从相册选择图片或视频</button>
+            <button class="sheet-cancel">取消</button>
+          </div>
+          <div class="bottom-nav">
+            <div class="on">识别</div>
+            <div>图鉴</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="phone">
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <span class="mini-icons"><span></span><span></span></span>
+          </div>
+          <div class="nav">
+            <strong>截取片段</strong>
+            <small>视频过长</small>
+          </div>
+          <div class="screen-progress"><span class="p40"></span></div>
+          <div class="content">
+            <div class="trim-viewer">
+              <span class="trim-label">原视频 · 00:42</span>
+            </div>
+            <div class="timeline">
+              <div class="track">
+                <div class="selection"></div>
+              </div>
+              <p class="trim-copy">已自动选中最清楚的 10 秒片段，可左右拖动调整。</p>
+            </div>
+            <button class="primary">使用这 10 秒识别</button>
+          </div>
+          <div class="bottom-nav">
+            <div class="on">识别</div>
+            <div>图鉴</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="phone">
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <span class="mini-icons"><span></span><span></span></span>
+          </div>
+          <div class="nav">
+            <strong>这可能是</strong>
+            <small>已入册</small>
+          </div>
+          <div class="screen-progress"><span class="p65"></span></div>
+          <div class="content">
+            <div class="hero-photo">
+              <span class="sticker turtle">
+                <span class="face"></span>
+                <span class="smile"></span>
+              </span>
+              <button class="raw-media-chip">原视频</button>
+            </div>
+            <div class="meta-bar">
+              <div class="meta-items">
+                <span class="meta-item">2026.02.25 15:42</span>
+                <span>·</span>
+                <span class="meta-item">菲律宾 阿尼洛</span>
+              </div>
+              <span class="pencil-button" aria-label="编辑时间地点"></span>
+            </div>
+
+            <div class="auto-save">
+              <b>已自动加入图鉴</b>
+              <span>轻点文字可修改</span>
+            </div>
+
+            <div class="result-card">
+              <div class="title-line">
+                <div>
+                  <h2 class="editable">玳瑁海龟</h2>
+                  <div class="latin editable">Hawksbill Sea Turtle · 海龟科</div>
+                </div>
+                <span class="confidence">较明确</span>
+              </div>
+
+              <p class="one-liner editable">尖尖的鹰钩嘴，加上像瓦片一样叠起来的背甲，基本就是海龟界的复古穿搭选手。</p>
+
+              <div class="compact-facts">
+                <div class="fact">
+                  <b class="editable">怎么认</b>
+                  <p class="editable">看侧脸的尖嘴、背甲边缘和鳞片叠法。</p>
+                </div>
+                <div class="fact">
+                  <b class="editable">在干嘛</b>
+                  <p class="editable">常在珊瑚附近找海绵和小型无脊椎动物。</p>
+                </div>
+                <div class="fact">
+                  <b class="editable">小心点</b>
+                  <p class="editable">保持距离，不挡它的路；它慢，不代表想被贴脸拍。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="on">识别</div>
+            <div>图鉴</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="phone">
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <span class="mini-icons"><span></span><span></span></span>
+          </div>
+          <div class="nav">
+            <strong>海底图鉴</strong>
+            <small>3 张</small>
+          </div>
+          <div class="screen-progress"><span class="p100"></span></div>
+          <div class="content">
+            <div class="shelf-title">
+              <div>
+                <h2>最近入册</h2>
+                <p>每一次遇见，都会变成一张小卡。</p>
+              </div>
+              <button class="ghost">管理</button>
+            </div>
+
+            <div class="collection">
+              <div class="specimen-card">
+                <div class="doodle">
+                  <span class="spark one">✦</span>
+                  <span class="sticker turtle">
+                    <span class="face"></span>
+                    <span class="smile"></span>
+                  </span>
+                  <span class="spark two">✿</span>
+                </div>
+                <h3>玳瑁海龟</h3>
+                <p>阿尼洛 · 2026.02.25 · 视频</p>
+                <div class="tag-row">
+                  <span class="mini-tag">海龟</span>
+                  <span class="mini-tag">濒危</span>
+                </div>
+              </div>
+
+              <div class="specimen-card">
+                <div class="doodle">
+                  <span class="spark one">✿</span>
+                  <span class="sticker ray">
+                    <span class="face"></span>
+                    <span class="smile"></span>
+                  </span>
+                  <span class="spark two">✦</span>
+                </div>
+                <h3>鹰鳐</h3>
+                <p>科莫多 · 2025.10.03</p>
+                <div class="tag-row">
+                  <span class="mini-tag">鳐鱼</span>
+                  <span class="mini-tag">星空背</span>
+                </div>
+              </div>
+
+              <div class="specimen-card">
+                <div class="doodle">
+                  <span class="spark one">✦</span>
+                  <span class="sticker fish">
+                    <span class="face"></span>
+                    <span class="smile"></span>
+                  </span>
+                  <span class="spark two">✿</span>
+                </div>
+                <h3>甜唇鱼</h3>
+                <p>薄荷岛 · 2025.08.18</p>
+                <div class="tag-row">
+                  <span class="mini-tag">鱼类</span>
+                  <span class="mini-tag">悬停</span>
+                </div>
+              </div>
+
+              <div class="empty-card">下一张海底小卡<br />会自动出现在这里</div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div>识别</div>
+            <div class="on">图鉴</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="phone">
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <span class="mini-icons"><span></span><span></span></span>
+          </div>
+          <div class="nav">
+            <strong>玳瑁海龟</strong>
+            <button class="icon-button dots" aria-label="更多操作"></button>
+          </div>
+          <div class="screen-progress"><span class="p100"></span></div>
+          <div class="content">
+            <div class="detail-art">
+              <span class="spark one">✦</span>
+              <span class="sticker turtle">
+                <span class="face"></span>
+                <span class="smile"></span>
+              </span>
+              <span class="spark two">✿</span>
+              <button class="raw-media-chip">查看原视频</button>
+            </div>
+            <div class="meta-bar">
+              <div class="meta-items">
+                <span class="meta-item">2026.02.25 15:42</span>
+                <span>·</span>
+                <span class="meta-item">菲律宾 阿尼洛</span>
+              </div>
+              <span class="pencil-button" aria-label="编辑时间地点"></span>
+            </div>
+
+            <div class="result-card">
+              <div class="title-line">
+                <div>
+                  <h2 class="editable">玳瑁海龟</h2>
+                  <div class="latin editable">Hawksbill Sea Turtle · 海龟科</div>
+                </div>
+                <span class="confidence">较明确</span>
+              </div>
+              <p class="one-liner editable">生成的手绘图鉴作为主视觉；原视频留在右下角入口，点开可全屏回看。</p>
+              <div class="compact-facts">
+                <div class="fact">
+                  <b class="editable">遇见记录</b>
+                  <p class="editable">在珊瑚坡附近慢慢游过，视频里能看到侧脸和背甲边缘。</p>
+                </div>
+                <div class="fact">
+                  <b class="editable">观察重点</b>
+                  <p class="editable">回看时优先看嘴型、背甲鳞片和壳边缘。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div>识别</div>
+            <div class="on">图鉴</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="notes">
+      <h2>本版交互约定</h2>
+      <ul>
+        <li>上传页不解释流程，只保留一个强动作：上传内容。</li>
+        <li>第一期不调摄像头；点击上传后拉起 action sheet，只提供“从相册选择图片或视频”。</li>
+        <li>用户选择图片后直接上传识别；选择视频后先判断时长。</li>
+        <li>视频超过 10 秒时进入裁剪页，默认选中最清楚的 10 秒片段，用户可调整后再识别。</li>
+        <li>识别完成后自动保存到图鉴，不再要求用户点击“保存”。</li>
+        <li>拍摄时间和地点放在图片下方的一条信息栏里，用户点击“补充”再编辑。</li>
+        <li>识别卡压缩到一屏内可读，先给名字、确定度、识别理由和三条关键科普。</li>
+        <li>识别页不展示删除按钮；删除记录放到图鉴详情或管理态里。</li>
+        <li>图鉴页是收藏柜，不做筛选归类；点击卡片进入详情。</li>
+        <li>详情页顶部展示生成的手绘图鉴，右下角提供查看原照片/原视频入口，点击后全屏预览原始媒体。</li>
+        <li>详情页右上角点点点承载更多操作，删除记录藏在里面；识别结果页不展示删除按钮。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

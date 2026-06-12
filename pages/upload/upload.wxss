@@ -1,0 +1,78 @@
+.upload-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.header {
+  padding-top: 22rpx;
+}
+
+.eyebrow {
+  margin-bottom: 12rpx;
+  color: #9aa098;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.upload-hero {
+  min-height: 720rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.upload-mark {
+  width: 300rpx;
+  height: 300rpx;
+  margin-bottom: 58rpx;
+  border-radius: 84rpx;
+  background:
+    radial-gradient(circle at 28% 20%, rgba(255,255,255,.82) 0 30rpx, transparent 32rpx),
+    linear-gradient(145deg, #2f6670, #8fc5bd);
+  position: relative;
+  transform: rotate(-4deg);
+  box-shadow:
+    34rpx 34rpx 0 rgba(239, 200, 183, .7),
+    0 42rpx 70rpx rgba(47, 102, 112, .18);
+}
+
+.brand-logo {
+  width: 300rpx;
+  height: 300rpx;
+  margin-bottom: 58rpx;
+  border-radius: 74rpx;
+  box-shadow: 0 42rpx 70rpx rgba(47, 102, 112, .18);
+}
+
+.mark-card {
+  position: absolute;
+  left: 88rpx;
+  top: 100rpx;
+  width: 124rpx;
+  height: 104rpx;
+  border-radius: 30rpx;
+  border: 9rpx solid #fbfaf5;
+  background:
+    linear-gradient(135deg, transparent 46%, #fbfaf5 47% 53%, transparent 54%),
+    linear-gradient(45deg, transparent 46%, #fbfaf5 47% 53%, transparent 54%);
+}
+
+.mark-bubble {
+  position: absolute;
+  right: -34rpx;
+  bottom: 24rpx;
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  background: #efc8b7;
+  box-shadow: inset 22rpx 0 0 rgba(255,255,255,.32);
+}
+
+.hero-copy {
+  max-width: 520rpx;
+  color: #646a63;
+  font-size: 28rpx;
+  line-height: 1.65;
+}

@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/upload/upload",
+    "pages/trim/trim",
+    "pages/result/result",
+    "pages/library/library",
+    "pages/detail/detail"
+  ],
+  "window": {
+    "navigationBarTitleText": "奇遇簿",
+    "navigationBarBackgroundColor": "#fbfaf5",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#fbfaf5"
+  },
+  "tabBar": {
+    "color": "#9aa098",
+    "selectedColor": "#202421",
+    "backgroundColor": "#fbfaf5",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/upload/upload",
+        "text": "识别"
+      },
+      {
+        "pagePath": "pages/library/library",
+        "text": "图鉴"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

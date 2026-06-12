@@ -1,0 +1,39 @@
+<view class="page result-page">
+  <view class="doodle result-art">
+    <text class="spark">✦</text>
+    <view class="sticker turtle">
+      <view class="face"></view>
+      <view class="smile"></view>
+    </view>
+    <button class="raw-chip" bindtap="previewMedia">原{{record.mediaLabel}}</button>
+  </view>
+
+  <view class="meta-bar">
+    <view>{{record.time}} · {{record.location}}</view>
+    <view class="pencil" bindtap="editMeta"></view>
+  </view>
+
+  <view class="save-row">
+    <text class="saved">已自动加入图鉴</text>
+    <text>轻点文字可修改</text>
+  </view>
+
+  <view class="panel result-card">
+    <view class="title-row">
+      <view>
+        <view class="name editable" bindtap="editText" data-field="name">{{record.name}}</view>
+        <view class="latin editable" bindtap="editText" data-field="latin">{{record.latin}}</view>
+      </view>
+      <view class="confidence">{{record.confidence}}</view>
+    </view>
+
+    <view class="summary editable" bindtap="editText" data-field="summary">{{record.summary}}</view>
+
+    <block wx:for="{{record.facts}}" wx:key="title">
+      <view class="fact">
+        <view class="fact-title editable" bindtap="editFact" data-index="{{index}}" data-key="title">{{item.title}}</view>
+        <view class="fact-text editable" bindtap="editFact" data-index="{{index}}" data-key="text">{{item.text}}</view>
+      </view>
+    </block>
+  </view>
+</view>

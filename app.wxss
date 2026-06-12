@@ -1,0 +1,200 @@
+page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 14% 8%, rgba(239, 200, 183, .34), transparent 28%),
+    radial-gradient(circle at 86% 12%, rgba(127, 182, 177, .28), transparent 26%),
+    linear-gradient(135deg, #f6f1e8 0%, #fbfaf5 45%, #edf5f1 100%);
+  color: #202421;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+.page {
+  padding: 32rpx 34rpx 48rpx;
+}
+
+.nav-title {
+  font-size: 48rpx;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.subtle {
+  color: #646a63;
+  font-size: 26rpx;
+  line-height: 1.55;
+}
+
+.primary {
+  width: 100%;
+  min-height: 104rpx;
+  border: 0;
+  border-radius: 999rpx;
+  background: #202421;
+  color: #fffef9;
+  font-size: 32rpx;
+  font-weight: 800;
+  box-shadow: 0 26rpx 46rpx rgba(37, 44, 39, .17);
+}
+
+.ghost {
+  min-height: 84rpx;
+  padding: 0 28rpx;
+  border: 1rpx solid #e7e1d7;
+  border-radius: 999rpx;
+  background: rgba(255, 254, 249, .72);
+  color: #202421;
+  font-size: 28rpx;
+  font-weight: 740;
+}
+
+.panel {
+  border: 1rpx solid rgba(32, 36, 33, .08);
+  border-radius: 52rpx;
+  background: rgba(255, 254, 249, .9);
+  box-shadow: 0 26rpx 56rpx rgba(37, 44, 39, .09);
+}
+
+.meta-bar {
+  min-height: 84rpx;
+  margin-top: 20rpx;
+  padding: 0 20rpx 0 26rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  border: 1rpx solid #e7e1d7;
+  border-radius: 999rpx;
+  background: rgba(255, 254, 249, .88);
+  color: #646a63;
+  font-size: 24rpx;
+}
+
+.pencil {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: rgba(32, 36, 33, .07);
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.pencil::before {
+  content: "";
+  position: absolute;
+  left: 25rpx;
+  top: 14rpx;
+  width: 8rpx;
+  height: 30rpx;
+  border-radius: 8rpx;
+  background: #202421;
+  transform: rotate(42deg);
+}
+
+.dots {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 50%;
+  background: rgba(32, 36, 33, .07);
+  position: relative;
+}
+
+.dots::before {
+  content: "";
+  position: absolute;
+  left: 18rpx;
+  top: 31rpx;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: #202421;
+  box-shadow: 14rpx 0 0 #202421, 28rpx 0 0 #202421;
+}
+
+.doodle {
+  position: relative;
+  overflow: hidden;
+  border: 1rpx solid rgba(32, 36, 33, .07);
+  border-radius: 42rpx;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, .9) 0 16rpx, transparent 18rpx),
+    radial-gradient(circle at 82% 18%, rgba(238, 190, 118, .48) 0 12rpx, transparent 14rpx),
+    linear-gradient(180deg, #dceee9, #fff7e6);
+}
+
+.sticker {
+  position: absolute;
+  filter: drop-shadow(0 14rpx 0 rgba(112, 88, 67, .07));
+}
+
+.turtle {
+  width: 192rpx;
+  height: 148rpx;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 34%, rgba(255, 255, 255, .28) 0 24rpx, transparent 26rpx),
+    linear-gradient(145deg, #7f9b68, #c7c0a0);
+  border: 6rpx solid rgba(85, 74, 62, .62);
+}
+
+.turtle::before {
+  content: "";
+  position: absolute;
+  right: -36rpx;
+  top: 44rpx;
+  width: 60rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: #c9bfa1;
+  border: 6rpx solid rgba(85, 74, 62, .62);
+}
+
+.turtle::after {
+  content: "";
+  position: absolute;
+  left: 26rpx;
+  bottom: -16rpx;
+  width: 40rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: #748c63;
+  box-shadow: 84rpx 0 0 #748c63;
+}
+
+.face {
+  position: absolute;
+  right: -22rpx;
+  top: 62rpx;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: #302d2a;
+  box-shadow: 34rpx 0 0 #302d2a;
+  z-index: 3;
+}
+
+.smile {
+  position: absolute;
+  right: -4rpx;
+  top: 78rpx;
+  width: 30rpx;
+  height: 16rpx;
+  border-bottom: 4rpx solid rgba(48, 45, 42, .62);
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.spark {
+  position: absolute;
+  z-index: 2;
+  color: #d8a75d;
+  font-size: 34rpx;
+}
+
+.spark.two {
+  color: #7cadb8;
+}

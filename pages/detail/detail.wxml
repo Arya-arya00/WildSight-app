@@ -1,0 +1,47 @@
+<view class="page detail-page" wx:if="{{record}}">
+  <view class="detail-nav">
+    <view class="nav-title">{{record.name}}</view>
+    <view class="dots" bindtap="moreActions"></view>
+  </view>
+
+  <view class="doodle detail-art">
+    <text class="spark">✦</text>
+    <view class="sticker turtle">
+      <view class="face"></view>
+      <view class="smile"></view>
+    </view>
+    <text class="spark two">✿</text>
+    <button class="raw-chip" bindtap="previewMedia">查看原{{record.mediaLabel}}</button>
+  </view>
+
+  <view class="meta-bar">
+    <view>{{record.time}} · {{record.location}}</view>
+    <view class="pencil" bindtap="editMeta"></view>
+  </view>
+
+  <view class="panel result-card">
+    <view class="title-row">
+      <view>
+        <view class="name editable" bindtap="editText" data-field="name">{{record.name}}</view>
+        <view class="latin editable" bindtap="editText" data-field="latin">{{record.latin}}</view>
+      </view>
+      <view class="confidence">{{record.confidence}}</view>
+    </view>
+
+    <view class="summary editable" bindtap="editText" data-field="summary">{{record.summary}}</view>
+
+    <block wx:for="{{record.facts}}" wx:key="title">
+      <view class="fact">
+        <view class="fact-title editable" bindtap="editFact" data-index="{{index}}" data-key="title">{{item.title}}</view>
+        <view class="fact-text editable" bindtap="editFact" data-index="{{index}}" data-key="text">{{item.text}}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="video-preview" wx:if="{{showVideo}}">
+    <view class="video-shell">
+      <video class="video" src="{{record.mediaPath}}" controls object-fit="contain"></video>
+      <button class="ghost close" bindtap="closeVideo">关闭</button>
+    </view>
+  </view>
+</view>

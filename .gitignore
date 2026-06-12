@@ -1,0 +1,30 @@
+.DS_Store
+
+# Secrets
+.env
+*.env
+server/.env
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Xcode
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Local logs
+*.log
+
+# Codex / local temp
+.impeccable/

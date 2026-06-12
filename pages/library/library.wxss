@@ -1,0 +1,78 @@
+.shelf-head {
+  padding-top: 20rpx;
+  margin-bottom: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24rpx;
+}
+
+.manage {
+  width: 132rpx;
+  flex: 0 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22rpx;
+}
+
+.card {
+  min-height: 444rpx;
+  padding: 18rpx;
+  border-radius: 48rpx;
+  box-sizing: border-box;
+}
+
+.card-art {
+  height: 250rpx;
+}
+
+.card-art .turtle {
+  left: 46rpx;
+  top: 64rpx;
+  transform: scale(.72);
+  transform-origin: top left;
+}
+
+.card-art .spark {
+  left: 22rpx;
+  top: 22rpx;
+}
+
+.card-art .spark.two {
+  right: 24rpx;
+  bottom: 22rpx;
+  left: auto;
+  top: auto;
+}
+
+.card-name {
+  margin-top: 18rpx;
+  font-size: 30rpx;
+  font-weight: 820;
+}
+
+.card-meta {
+  margin-top: 8rpx;
+  color: #646a63;
+  font-size: 22rpx;
+  line-height: 1.4;
+}
+
+.tags {
+  margin-top: 14rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.tag {
+  padding: 8rpx 12rpx;
+  border-radius: 999rpx;
+  background: rgba(110, 174, 177, .15);
+  color: #426d70;
+  font-size: 22rpx;
+  font-weight: 760;
+}

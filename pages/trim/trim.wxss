@@ -1,0 +1,47 @@
+.trim-page {
+  box-sizing: border-box;
+}
+
+.intro {
+  margin-top: 12rpx;
+  margin-bottom: 28rpx;
+}
+
+.video-card {
+  height: 520rpx;
+  border-radius: 56rpx;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 26rpx 56rpx rgba(37, 44, 39, .1);
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+}
+
+.duration-pill {
+  position: absolute;
+  left: 24rpx;
+  top: 24rpx;
+  padding: 12rpx 20rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 254, 249, .86);
+  color: #202421;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.timeline {
+  margin: 28rpx 0;
+  padding: 24rpx;
+}
+
+.timeline-head {
+  margin-bottom: 14rpx;
+  display: flex;
+  justify-content: space-between;
+  color: #202421;
+  font-size: 26rpx;
+  font-weight: 760;
+}
