@@ -76,12 +76,11 @@ struct AIIdentifyClient {
             throw AIIdentifyError.badServerResponse(errorMessage(from: data))
         }
 
-        guard
-            let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let artworkBase64 = object["artworkBase64"] as? String,
-            !artworkBase64.isEmpty
-        else {
+        guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             throw AIIdentifyError.badServerResponse("手绘图生成结果无法读取。")
+        }
+        guard let artworkBase64 = object["artworkBase64"] as? String, !artworkBase64.isEmpty else {
+            return nil
         }
         return artworkBase64
     }

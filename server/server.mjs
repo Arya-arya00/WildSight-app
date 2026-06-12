@@ -557,7 +557,7 @@ async function fetchImageAsBase64(url) {
 }
 
 function imageTimeoutMs() {
-  return Number(process.env.OPENAI_IMAGE_TIMEOUT_MS || 22000);
+  return Number(process.env.OPENAI_IMAGE_TIMEOUT_MS || 90000);
 }
 
 async function withTimeout(promise, timeoutMs, label) {
