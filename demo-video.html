@@ -39,10 +39,6 @@
     }
 
     .title {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 16px;
       margin-bottom: 14px;
     }
 
@@ -57,8 +53,10 @@
       color: var(--muted);
       font-size: 14px;
       line-height: 1.6;
-      max-width: min(520px, 52vw);
-      text-align: right;
+      display: block;
+      margin-top: 6px;
+      max-width: 760px;
+      text-align: left;
     }
 
     .player {
@@ -81,19 +79,12 @@
         padding: 14px;
       }
 
-      .title {
-        display: block;
-      }
-
       h1 {
         font-size: 22px;
       }
 
       .badge {
-        display: block;
-        margin-top: 6px;
         max-width: 100%;
-        text-align: left;
       }
     }
   </style>
