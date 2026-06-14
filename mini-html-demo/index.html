@@ -78,7 +78,7 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       min-width: 0;
     }
 
@@ -100,13 +100,15 @@
     }
 
     .brand-name strong {
-      font-size: 18px;
+      font-size: 24px;
       line-height: 1.1;
     }
 
-    .brand-name span {
-      color: var(--muted);
-      font-size: 13px;
+    .brand-en {
+      color: #ff5757;
+      font-size: 20px;
+      font-weight: 750;
+      line-height: 1;
     }
 
     .service-state {
@@ -149,14 +151,23 @@
 
     h1 {
       margin: 0 0 24px;
-      max-width: 9ch;
       font-size: 72px;
       line-height: 1.04;
       letter-spacing: 0;
       text-wrap: balance;
     }
 
-    .intro p {
+    h1 span {
+      display: block;
+    }
+
+    .intro-copy {
+      display: grid;
+      gap: 12px;
+      max-width: 650px;
+    }
+
+    .intro-copy p {
       max-width: 620px;
       margin: 0;
       color: var(--muted);
@@ -185,6 +196,7 @@
     }
 
     .demo-shell {
+      position: relative;
       border-radius: 22px;
       background:
         linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface) 90%, var(--surface-soft))),
@@ -195,26 +207,13 @@
     }
 
     .demo-head {
+      position: absolute;
+      top: 22px;
+      right: 24px;
+      z-index: 2;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 22px 24px 0;
-    }
-
-    .demo-title {
-      display: grid;
-      gap: 3px;
-    }
-
-    .demo-title strong {
-      font-size: 18px;
-      line-height: 1.25;
-    }
-
-    .demo-title span {
-      color: var(--muted);
-      font-size: 13px;
+      justify-content: flex-end;
     }
 
     .reset-button {
@@ -228,7 +227,7 @@
     }
 
     .panel {
-      padding: 20px 24px 24px;
+      padding: 24px;
     }
 
     .dropzone {
@@ -311,8 +310,11 @@
       background: color-mix(in srgb, var(--surface-soft) 78%, var(--accent-soft));
     }
 
-    .primary-button:disabled,
     .reset-button:disabled {
+      display: none;
+    }
+
+    .primary-button:disabled {
       cursor: not-allowed;
       opacity: .55;
     }
@@ -495,12 +497,106 @@
       margin-top: 16px;
     }
 
-    .note {
-      margin: 18px 0 0;
+    .save-button {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 18px;
+      border-radius: 16px;
+      background: var(--surface-strong);
+      color: var(--bg);
+      font-size: 16px;
+      font-weight: 760;
+    }
+
+    .save-button:disabled {
+      cursor: default;
+      opacity: .78;
+    }
+
+    .saved-note {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .saved-note.is-visible {
+      display: block;
+    }
+
+    .records {
+      display: none;
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .records.is-visible {
+      display: block;
+    }
+
+    .records h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .record-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .record-card {
+      min-width: 0;
+      padding: 10px;
+      border-radius: 16px;
+      background: var(--surface-soft);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--line) 82%, transparent);
+      transition: box-shadow .18s ease, transform .18s ease;
+    }
+
+    .record-card.is-new {
+      box-shadow: inset 0 0 0 2px var(--accent), var(--shadow-soft);
+      transform: translateY(-1px);
+    }
+
+    .record-art {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--surface);
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.6;
-      padding: 0 2px;
+    }
+
+    .record-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .record-name {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: 780;
+      line-height: 1.25;
+    }
+
+    .record-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
     }
 
     .spinner {
@@ -556,7 +652,7 @@
         line-height: 1.08;
       }
 
-      .intro p {
+      .intro-copy p {
         font-size: 16px;
       }
 
@@ -564,6 +660,10 @@
       .panel {
         padding-left: 18px;
         padding-right: 18px;
+      }
+
+      .demo-head {
+        right: 18px;
       }
     }
 
@@ -577,14 +677,9 @@
         white-space: normal;
       }
 
-      .demo-head {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 12px;
-      }
-
       .reset-button {
-        width: 100%;
+        min-height: 32px;
+        padding-inline: 12px;
       }
 
       .dropzone {
@@ -609,6 +704,10 @@
       .result-body {
         padding: 18px;
       }
+
+      .record-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -630,36 +729,34 @@
         <div class="brand-mark" aria-hidden="true">识</div>
         <div class="brand-name">
           <strong>识野</strong>
-          <span>认识 / 记录</span>
         </div>
+        <div class="brand-en" aria-hidden="true">WildSight</div>
       </div>
       <div id="serviceState" class="service-state is-waking">正在唤醒识别服务</div>
     </header>
 
     <section class="hero">
       <div class="intro">
-        <h1>让好奇，识得万物。</h1>
-        <p>上传动物的图片或视频，我会带你认识它。这个 html 体验版 demo 先支持图片上传，会展示识别结果、轻科普内容，并继续绘制一张身份卡。</p>
+        <h1 aria-label="让好奇识得万物"><span aria-hidden="true">让好奇</span><span aria-hidden="true">识得万物</span></h1>
+        <div class="intro-copy">
+          <p>希望通过有趣的科普内容和可爱的身份卡，让你对和这个地球上每一个生命的相遇都充满好奇。</p>
+          <p>当前版本暂不支持对保存的身份卡进行分类，别急这个模块已经在构思中啦～</p>
+        </div>
         <div class="meta" aria-label="项目能力">
-          <span class="tag">认识</span>
-          <span class="tag">记录</span>
+          <span class="tag">动物</span>
           <span class="tag">轻科普</span>
-          <span class="tag">身份卡</span>
+          <span class="tag">记录</span>
         </div>
       </div>
 
       <section class="demo-shell" aria-label="在线体验">
         <div class="demo-head">
-          <div class="demo-title">
-            <strong>在线体验</strong>
-            <span>上传动物的图片，我会带你认识它</span>
-          </div>
           <button id="resetButton" class="reset-button" type="button" disabled>重新上传</button>
         </div>
 
         <div class="panel">
           <label id="dropzone" class="dropzone" for="mediaInput">
-            <input id="mediaInput" type="file" accept="image/*" />
+            <input id="mediaInput" type="file" accept="image/*,video/*" />
             <span class="upload-copy">
               <span class="upload-icon" aria-hidden="true">
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
@@ -669,7 +766,7 @@
                 </svg>
               </span>
               <strong>上传图片或视频</strong>
-              <span>上传动物的图片，我会带你认识它，并生成一张身份卡。</span>
+              <span>上传动物的图片或视频，我会带你认识它。</span>
             </span>
           </label>
 
@@ -698,17 +795,22 @@
               <p id="resultSummary" class="summary"></p>
               <ul id="facts" class="facts"></ul>
               <div id="resultTags" class="result-tags"></div>
+              <button id="saveButton" class="save-button" type="button">保存这张身份卡</button>
+              <div id="savedNote" class="saved-note">已在「记录」中保存了你认识的新朋友。</div>
             </div>
           </article>
 
-          <p class="note">html 体验版 demo 会在浏览器本地压缩图片后上传。第一次访问可能需要等待识别服务唤醒。</p>
+          <section id="records" class="records" aria-label="记录">
+            <h2>每次遇见都会记录在此</h2>
+            <div id="recordGrid" class="record-grid"></div>
+          </section>
         </div>
       </section>
     </section>
   </main>
 
   <script>
-    const API_BASE_URL = "https://WildSight-app.onrender.com";
+    const API_BASE_URL = "https://shiye-app.onrender.com";
     const MAX_IMAGE_SIZE = 1400;
     const JPEG_QUALITY = 0.84;
 
@@ -727,13 +829,21 @@
     const resultSummary = document.getElementById("resultSummary");
     const facts = document.getElementById("facts");
     const resultTags = document.getElementById("resultTags");
+    const saveButton = document.getElementById("saveButton");
+    const savedNote = document.getElementById("savedNote");
+    const records = document.getElementById("records");
+    const recordGrid = document.getElementById("recordGrid");
 
     let selectedFile = null;
     let compressedFile = null;
+    let latestResult = null;
+    let savedLatestId = "";
+    let savedRecords = loadSavedRecords();
     let busy = false;
     let statusTimer = null;
     let runId = 0;
 
+    renderRecords();
     wakeServer();
 
     mediaInput.addEventListener("change", async () => {
@@ -748,6 +858,7 @@
     });
 
     resetButton.addEventListener("click", resetDemo);
+    saveButton.addEventListener("click", saveCurrentCard);
 
     ["dragenter", "dragover"].forEach((eventName) => {
       dropzone.addEventListener(eventName, (event) => {
@@ -776,29 +887,30 @@
         serviceState.textContent = "识别服务已就绪";
         serviceState.classList.remove("is-waking");
       } catch {
-        serviceState.textContent = "服务正在唤醒，首次可能较慢";
+        serviceState.textContent = "识别服务唤醒中";
       }
     }
 
     async function prepareFile(file) {
       clearError();
 
-      if (!file.type.startsWith("image/")) {
-        showError("html 体验版 demo 目前先支持图片。请上传一张动物图片。");
+      if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
+        showError("请上传动物的图片或视频。");
         return;
       }
 
       busy = true;
       selectedFile = file;
-      setButtonLoading("正在压缩图片");
-      showStatus(`已选择：${file.name}。正在准备图片。`, 16);
+      const isVideo = file.type.startsWith("video/");
+      setButtonLoading(isVideo ? "正在截取画面" : "正在准备图片");
+      showStatus(isVideo ? "正在从视频里截取画面。" : "正在准备图片。", 16);
 
       try {
-        compressedFile = await compressImage(file);
+        compressedFile = isVideo ? await frameFromVideo(file) : await compressImage(file);
         identifyButton.disabled = true;
         identifyButton.innerHTML = "<span>正在识别</span>";
         resetButton.disabled = false;
-        showStatus(`图片已准备好：${formatBytes(compressedFile.size)}。即将开始识别。`, 24);
+        showStatus("开始识别。", 24);
         await identifySelectedImage();
       } catch (error) {
         selectedFile = null;
@@ -816,18 +928,18 @@
       resetButton.disabled = true;
       setButtonLoading("正在识别");
       hideResult();
-      showStatus("正在识别。第一次访问可能需要等待识别服务唤醒。", 38);
+      showStatus("正在识别。", 38);
       startStatusLoop([
-        "正在识别。第一次访问可能需要等待识别服务唤醒。",
-        "还在识别中。图片会先判断主体，再生成科普内容。",
-        "识别服务仍在处理。请先停留在这个页面。"
+        "正在识别。",
+        "正在生成轻科普内容。",
+        "快好了。"
       ], 38);
 
       try {
         const identifyResult = await callIdentify(compressedFile);
         stopStatusLoop();
         renderResult(identifyResult);
-        showStatus("识别结果已生成，身份卡正在后台绘制。", 68);
+        showStatus("识别完成，正在绘制身份卡。", 68);
         identifyButton.disabled = false;
         identifyButton.innerHTML = "<span>重新识别</span>";
         resetButton.disabled = false;
@@ -871,9 +983,9 @@
         form.append("tags", JSON.stringify(identifyResult.tags || []));
 
         startStatusLoop([
-          "身份卡正在后台绘制。你可以先阅读识别结果。",
-          "身份卡还在绘制中。图片生成通常会比文字识别更慢。",
-          "还在绘制身份卡。如果失败，识别结果会继续保留。"
+          "正在绘制身份卡。",
+          "身份卡还在生成。",
+          "快好了。"
         ], 72);
 
         const response = await fetchWithTimeout(`${API_BASE_URL}/api/artwork`, {
@@ -888,12 +1000,13 @@
         artworkImage.src = `data:image/jpeg;base64,${data.artworkBase64}`;
         artworkImage.classList.remove("hidden");
         artworkPlaceholder.classList.add("hidden");
+        updateSavedArtwork(artworkImage.src);
         stopStatusLoop();
         showStatus("身份卡已生成。", 100);
       } catch (error) {
         if (currentRunId !== runId) return;
         stopStatusLoop();
-        artworkPlaceholder.innerHTML = "<span><strong>身份卡暂时没有生成</strong>识别内容可以先查看，稍后可重新上传再试。</span>";
+        artworkPlaceholder.innerHTML = "<span><strong>身份卡暂时没有生成</strong>识别内容可以先查看。</span>";
         showError(error.message || "身份卡生成失败。识别结果已保留。");
       } finally {
         identifyButton.disabled = false;
@@ -932,7 +1045,7 @@
 
     function renderResult(data) {
       resultName.textContent = data.name || "识别结果待确认";
-      resultConfidence.textContent = data.confidence || "不确定";
+      resultConfidence.textContent = normalizeConfidence(data.confidence);
       resultLatin.textContent = data.latin || "分类待确认";
       resultSummary.textContent = data.summary || "这张图片的信息还不够明确。";
       facts.replaceChildren(...(data.facts || []).map((item) => {
@@ -955,6 +1068,10 @@
       artworkImage.removeAttribute("src");
       artworkPlaceholder.classList.remove("hidden");
       artworkPlaceholder.innerHTML = "<span><strong>正在绘制身份卡</strong>识别结果已生成，身份卡会在完成后自动出现。</span>";
+      latestResult = data;
+      saveButton.disabled = false;
+      saveButton.textContent = "保存这张身份卡";
+      savedNote.classList.remove("is-visible");
       result.classList.add("is-visible");
     }
 
@@ -967,6 +1084,8 @@
       stopStatusLoop();
       selectedFile = null;
       compressedFile = null;
+      latestResult = null;
+      savedLatestId = "";
       mediaInput.value = "";
       hideResult();
       statusCard.className = "status-card";
@@ -976,12 +1095,91 @@
       resetButton.disabled = true;
     }
 
+    function saveCurrentCard() {
+      if (!latestResult) return;
+      const record = {
+        id: `${Date.now()}`,
+        name: latestResult.name || "识别结果待确认",
+        latin: latestResult.latin || "分类待确认",
+        tags: latestResult.tags || [],
+        artwork: artworkImage.src || "",
+        createdAt: new Date().toISOString()
+      };
+      savedRecords = [record, ...savedRecords].slice(0, 8);
+      savedLatestId = record.id;
+      localStorage.setItem("wildsight-mini-records", JSON.stringify(savedRecords));
+      saveButton.textContent = "身份卡已保存";
+      saveButton.disabled = true;
+      savedNote.classList.add("is-visible");
+      showStatus("身份卡已保存。", 100);
+      renderRecords(record.id);
+    }
+
+    function updateSavedArtwork(src) {
+      if (!savedLatestId || !src) return;
+      const index = savedRecords.findIndex((record) => record.id === savedLatestId);
+      if (index < 0) return;
+      savedRecords[index] = { ...savedRecords[index], artwork: src };
+      localStorage.setItem("wildsight-mini-records", JSON.stringify(savedRecords));
+      renderRecords(savedLatestId);
+    }
+
+    function normalizeConfidence(value) {
+      const text = String(value || "").trim();
+      if (text.includes("一定") || text.includes("准确") || text.includes("明确") || text.toLowerCase() === "high") {
+        return "一定是";
+      }
+      if (text.includes("可能") || text.includes("模糊") || text.includes("一般") || text.toLowerCase() === "medium") {
+        return "可能是";
+      }
+      return "不确定";
+    }
+
+    function loadSavedRecords() {
+      try {
+        return JSON.parse(localStorage.getItem("wildsight-mini-records") || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function renderRecords(highlightId = "") {
+      if (!savedRecords.length) {
+        records.classList.remove("is-visible");
+        recordGrid.replaceChildren();
+        return;
+      }
+      records.classList.add("is-visible");
+      recordGrid.replaceChildren(...savedRecords.map((record) => {
+        const card = document.createElement("article");
+        card.className = `record-card${record.id === highlightId ? " is-new" : ""}`;
+        const art = document.createElement("div");
+        art.className = "record-art";
+        if (record.artwork) {
+          const img = document.createElement("img");
+          img.src = record.artwork;
+          img.alt = `${record.name}身份卡`;
+          art.append(img);
+        } else {
+          art.textContent = "身份卡";
+        }
+        const name = document.createElement("div");
+        name.className = "record-name";
+        name.textContent = record.name;
+        const meta = document.createElement("div");
+        meta.className = "record-meta";
+        meta.textContent = (record.tags || []).slice(0, 2).join(" · ") || "待补充";
+        card.append(art, name, meta);
+        return card;
+      }));
+    }
+
     function showStatus(message, progress) {
       statusCard.className = "status-card is-visible";
       statusCard.innerHTML = `
         <div>${escapeHTML(message)}</div>
         <div class="progress" aria-hidden="true">
-          <div class="progress-row"><span>处理进度</span><span>${Math.min(progress, 100)}%</span></div>
+          <div class="progress-row"><span>进度</span><span>${Math.min(progress, 100)}%</span></div>
           <div class="bar"><span style="width:${Math.min(progress, 100)}%"></span></div>
         </div>
       `;
@@ -1019,9 +1217,44 @@
       });
     }
 
-    function formatBytes(bytes) {
-      if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
-      return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+    async function frameFromVideo(file) {
+      const url = URL.createObjectURL(file);
+      try {
+        const video = document.createElement("video");
+        video.preload = "metadata";
+        video.muted = true;
+        video.playsInline = true;
+        video.src = url;
+
+        await new Promise((resolve, reject) => {
+          video.onloadedmetadata = resolve;
+          video.onerror = () => reject(new Error("视频读取失败，请换一段更清楚的视频。"));
+        });
+
+        const duration = Number.isFinite(video.duration) ? video.duration : 0;
+        video.currentTime = Math.min(Math.max(duration * 0.5, 0.1), Math.max(duration - 0.1, 0.1));
+        await new Promise((resolve, reject) => {
+          video.onseeked = resolve;
+          video.onerror = () => reject(new Error("视频截帧失败，请换一段更清楚的视频。"));
+        });
+
+        const scale = Math.min(1, MAX_IMAGE_SIZE / Math.max(video.videoWidth, video.videoHeight));
+        const width = Math.max(1, Math.round(video.videoWidth * scale));
+        const height = Math.max(1, Math.round(video.videoHeight * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const context = canvas.getContext("2d");
+        context.drawImage(video, 0, 0, width, height);
+        const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", JPEG_QUALITY));
+        if (!blob) throw new Error("视频截帧失败，请换一段更清楚的视频。");
+        return new File([blob], file.name.replace(/\.[^.]+$/, "") + "-frame.jpg", {
+          type: "image/jpeg",
+          lastModified: Date.now()
+        });
+      } finally {
+        URL.revokeObjectURL(url);
+      }
     }
 
     function escapeHTML(value) {
