@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>demo-video</title>
+  <style>
+    :root {
+      --bg: #f5f7f2;
+      --surface: #ffffff;
+      --ink: #172118;
+      --muted: #667267;
+      --line: #dfe7dd;
+      --accent: #4f7b5a;
+      --shadow: 0 20px 52px rgba(26, 40, 29, .14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(79, 123, 90, .12), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(196, 168, 91, .14), transparent 28%),
+        var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    main {
+      width: min(980px, 100%);
+    }
+
+    .title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 760;
+    }
+
+    .badge {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .player {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0b0f0c;
+      box-shadow: var(--shadow);
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      max-height: min(72vh, 720px);
+      background: #0b0f0c;
+    }
+
+    .fallback {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 620px) {
+      body {
+        padding: 14px;
+      }
+
+      .title {
+        display: block;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .badge {
+        display: block;
+        margin-top: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="title">
+      <h1>demo-video</h1>
+      <span class="badge">WildSight</span>
+    </div>
+    <section class="player" aria-label="demo-video 播放器">
+      <video controls controlsList="nodownload" preload="metadata" playsinline>
+        <source src="./assets/demo-video.mp4" type="video/mp4" />
+        当前浏览器不支持在线播放此视频。
+      </video>
+    </section>
+    <p class="fallback">如果视频没有自动载入，请刷新页面后重试。</p>
+  </main>
+</body>
+</html>
