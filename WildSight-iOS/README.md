@@ -1,12 +1,12 @@
-# 奇遇簿 iOS Demo
+# 识野 iOS Demo
 
-这是“奇遇簿”的 SwiftUI iOS 前端 Demo。
+这是“识野”的 SwiftUI iOS 前端 Demo。
 
 ## 打开方式
 
 用 Xcode 打开：
 
-`QiyuBook-iOS/QiyuBook.xcodeproj`
+`WildSight-iOS/WildSight.xcodeproj`
 
 ## 当前已实现
 

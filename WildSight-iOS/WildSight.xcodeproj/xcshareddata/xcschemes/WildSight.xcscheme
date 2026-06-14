@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "500000000000000000000001"
-               BuildableName = "QiyuBook.app"
-               BlueprintName = "QiyuBook"
-               ReferencedContainer = "container:QiyuBook.xcodeproj">
+               BuildableName = "WildSight.app"
+               BlueprintName = "WildSight"
+               ReferencedContainer = "container:WildSight.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "500000000000000000000001"
-            BuildableName = "QiyuBook.app"
-            BlueprintName = "QiyuBook"
-            ReferencedContainer = "container:QiyuBook.xcodeproj">
+            BuildableName = "WildSight.app"
+            BlueprintName = "WildSight"
+            ReferencedContainer = "container:WildSight.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -63,9 +63,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "500000000000000000000001"
-            BuildableName = "QiyuBook.app"
-            BlueprintName = "QiyuBook"
-            ReferencedContainer = "container:QiyuBook.xcodeproj">
+            BuildableName = "WildSight.app"
+            BlueprintName = "WildSight"
+            ReferencedContainer = "container:WildSight.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

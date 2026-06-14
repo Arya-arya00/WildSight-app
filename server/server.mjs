@@ -91,7 +91,7 @@ const server = createServer(async (request, response) => {
 });
 
 server.listen(port, "0.0.0.0", () => {
-  console.log(`Qiyubu server listening on http://0.0.0.0:${port}`);
+  console.log(`WildSight server listening on http://0.0.0.0:${port}`);
 });
 
 function loadDotEnv() {
@@ -348,7 +348,7 @@ function userFacingError(error) {
   if (message.includes("OpenAI request failed: 400")) {
     return "OpenAI 不接受这次请求。可能是模型、图片格式或结构化输出参数不兼容。";
   }
-  return "识别服务调用失败，请查看 /tmp/qiyubook-server.log。";
+  return "识别服务调用失败，请查看 /tmp/wildsight-server.log。";
 }
 
 function stripJSONFence(text) {

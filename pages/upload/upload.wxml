@@ -1,11 +1,11 @@
 <view class="page upload-page">
   <view class="header">
-    <view class="eyebrow">奇遇簿</view>
+    <view class="eyebrow">识野</view>
     <view class="nav-title">上传图片或视频，记录一次奇遇</view>
   </view>
 
   <view class="upload-hero">
-    <image class="brand-logo" src="/assets/logo-qiyubu.png" mode="aspectFill"></image>
+    <image class="brand-logo" src="/assets/logo-wildsight.png" mode="aspectFill"></image>
     <view class="hero-copy">把你遇见的生命交给我，我会自动生成一张图鉴小卡。</view>
   </view>
 

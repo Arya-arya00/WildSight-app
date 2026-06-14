@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct QiyuBookApp: App {
+struct WildSightApp: App {
     @StateObject private var store = EncounterStore()
 
     var body: some Scene {

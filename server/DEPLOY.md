@@ -76,7 +76,7 @@ https://你的服务地址/health
 拿到公网 HTTPS 地址后，修改：
 
 ```text
-QiyuBook-iOS/QiyuBook/APIConfig.swift
+WildSight-iOS/WildSight/APIConfig.swift
 ```
 
 把 `baseURL` 改成你的服务地址，然后重新打包安装。

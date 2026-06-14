@@ -1,4 +1,4 @@
-# 奇遇簿识别服务接口
+# 识野识别服务接口
 
 App 通过 `POST /api/identify` 上传图片或视频片段，服务端返回可直接生成图鉴卡的结构化 JSON。
 
@@ -6,7 +6,7 @@ App 通过 `POST /api/identify` 上传图片或视频片段，服务端返回可
 
 当前开发地址已经填好：
 
-`QiyuBook-iOS/QiyuBook/APIConfig.swift`
+`WildSight-iOS/WildSight/APIConfig.swift`
 
 ```swift
 static let identifyEndpoint = "http://192.168.1.213:3000/api/identify"
