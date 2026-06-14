@@ -32,7 +32,7 @@ final class EncounterStore: ObservableObject {
         let record = EncounterRecord(
             name: "玳瑁海龟",
             latin: "Hawksbill Sea Turtle · 海龟科",
-            confidence: "较明确",
+            confidence: "准确",
             summary: "尖尖的鹰钩嘴，加上像瓦片一样叠起来的背甲，基本就是海龟界的复古穿搭选手。",
             facts: [
                 EncounterFact(title: "怎么认", text: "看侧脸的尖嘴、背甲边缘和鳞片叠法。"),
@@ -106,7 +106,7 @@ final class EncounterStore: ObservableObject {
         EncounterRecord(
             name: response.name,
             latin: response.latin ?? "分类待确认",
-            confidence: response.confidence ?? "不确定",
+            confidence: response.confidence ?? "模糊",
             summary: response.summary,
             facts: response.facts.map { EncounterFact(title: $0.title, text: $0.text) },
             artworkBase64: response.artworkBase64,
@@ -158,7 +158,7 @@ final class EncounterStore: ObservableObject {
         EncounterRecord(
             name: "玳瑁海龟",
             latin: "Hawksbill Sea Turtle · 海龟科",
-            confidence: "较明确",
+            confidence: "准确",
             summary: "尖尖的鹰钩嘴，加上像瓦片一样叠起来的背甲，基本就是海龟界的复古穿搭选手。",
             facts: [
                 EncounterFact(title: "怎么认", text: "看侧脸的尖嘴、背甲边缘和鳞片叠法。"),
@@ -180,7 +180,7 @@ final class EncounterStore: ObservableObject {
         EncounterRecord(
             name: "鹰鳐",
             latin: "Eagle Ray · 鳐科",
-            confidence: "较明确",
+            confidence: "准确",
             summary: "背着星星点点的斑纹巡航，像海里飞过的一张小毯子。",
             facts: [
                 EncounterFact(title: "怎么认", text: "尖头、宽大的胸鳍和背部斑点是重点。"),
@@ -205,7 +205,7 @@ final class EncounterStore: ObservableObject {
             return EncounterRecord(
                 name: "蝠鲼",
                 latin: "Mobula birostris · 蝠鲼科",
-                confidence: "较明确",
+                confidence: "准确",
                 summary: "它像一张巨大的黑色披风从水里滑过，宽阔胸鳍一扇，整个海面都像慢了下来。",
                 facts: [
                     EncounterFact(title: "它是谁：温和的滤食者", text: "蝠鲼属于软骨鱼类，身体扁宽，两侧胸鳍像翅膀，头前有一对头鳍，会帮助把浮游生物送入口中。"),
@@ -226,7 +226,7 @@ final class EncounterStore: ObservableObject {
             return EncounterRecord(
                 name: "栉水母",
                 latin: "Ctenophora · 栉水母动物",
-                confidence: "较明确",
+                confidence: "准确",
                 summary: "看起来像一团透明果冻，其实身上藏着会折射彩光的小梳子。",
                 facts: [
                     EncounterFact(title: "它是谁：透明的栉水母", text: "栉水母不是普通水母。它们没有刺细胞，身体通常透明，靠一排排像梳齿的纤毛板在水中移动。"),
@@ -247,7 +247,7 @@ final class EncounterStore: ObservableObject {
             return EncounterRecord(
                 name: "鹰鳐",
                 latin: "Aetobatus sp. · 鹰鲼科",
-                confidence: "较明确",
+                confidence: "准确",
                 summary: "它在海底上方巡航时，真的很像一架安静的小飞行器。",
                 facts: [
                     EncounterFact(title: "它是谁：会飞的鳐", text: "鹰鳐身体扁宽，胸鳍像翅膀，尾巴细长。很多个体背部带有斑点，游动时像在水里滑翔。"),

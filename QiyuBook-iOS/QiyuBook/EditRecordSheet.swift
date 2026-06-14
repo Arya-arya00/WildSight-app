@@ -31,7 +31,7 @@ struct EncounterContentCard: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(record.confidence)
+                Text(accuracyLabel(for: record.confidence))
                     .font(.caption.weight(.bold))
                     .foregroundStyle(AppTheme.kelp)
                     .padding(.horizontal, 10)
@@ -73,6 +73,19 @@ struct EncounterContentCard: View {
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
         .cardSurface(cornerRadius: 28)
+    }
+
+    private func accuracyLabel(for confidence: String) -> String {
+        if confidence.contains("无法识别") || confidence.contains("无法") || confidence.contains("看不出") || confidence.contains("没有主体") || confidence.contains("没有生物") {
+            return "不确定"
+        }
+        if confidence.contains("模糊") || confidence.contains("不清") || confidence.contains("看不清") || confidence.contains("可能") || confidence.contains("猜测") || confidence.contains("低") {
+            return "可能是"
+        }
+        if confidence.contains("准确") || confidence.contains("明确") || confidence.contains("确定") || confidence.contains("高") {
+            return "一定是"
+        }
+        return "可能是"
     }
 }
 

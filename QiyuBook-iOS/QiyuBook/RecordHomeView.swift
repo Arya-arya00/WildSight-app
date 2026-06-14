@@ -302,7 +302,7 @@ struct RecordHomeView: View {
         let status = response.status?.lowercased() ?? ""
         let confidence = response.confidence ?? ""
         guard mediaKind == .video else { return }
-        if status == "unknown" || confidence.contains("看不清") || confidence.contains("不确定") {
+        if status == "unknown" || confidence.contains("无法识别") || confidence.contains("看不清") {
             throw AIIdentifyError.badServerResponse("这段视频里的主体不够清楚，暂时不保存记录。请换一段更清楚的 10 秒片段再试。")
         }
     }
