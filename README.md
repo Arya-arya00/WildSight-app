@@ -4,7 +4,7 @@
 
 WildSight 是一款面向自然观察与旅行探索场景的 AI 识别 App。用户可以上传动物的图片或视频，识别它是谁，了解它的外形特征、行为习性和有趣冷知识，并把每一次遇见保存成一张手绘风的生物身份卡。
 
-在线简历体验版：
+在线 html 体验版 demo：
 
 [https://arya-arya00.github.io/WildSight-app/mini-html-demo](https://arya-arya00.github.io/WildSight-app/mini-html-demo)
 
