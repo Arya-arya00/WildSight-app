@@ -17,6 +17,7 @@ final class EncounterStore: ObservableObject {
 
     @discardableResult
     func save(_ record: EncounterRecord) -> EncounterRecord {
+        let record = Self.recordWithPersistentMedia(record)
         if let index = records.firstIndex(where: { $0.id == record.id }) {
             records[index] = record
             persist()
@@ -125,7 +126,7 @@ final class EncounterStore: ObservableObject {
 
     func update(_ record: EncounterRecord) {
         guard let index = records.firstIndex(where: { $0.id == record.id }) else { return }
-        records[index] = record
+        records[index] = Self.recordWithPersistentMedia(record)
         persist()
     }
 
@@ -224,14 +225,14 @@ final class EncounterStore: ObservableObject {
             )
         case .shortVideo:
             return EncounterRecord(
-                name: "栉水母",
-                latin: "Ctenophora · 栉水母动物",
+                name: "水母",
+                latin: "Scyphozoa · 钵水母纲",
                 confidence: "准确",
-                summary: "看起来像一团透明果冻，其实身上藏着会折射彩光的小梳子。",
+                summary: "粉色半透明的伞状身体，像一盏慢慢漂过来的水晶灯。",
                 facts: [
-                    EncounterFact(title: "它是谁：透明的栉水母", text: "栉水母不是普通水母。它们没有刺细胞，身体通常透明，靠一排排像梳齿的纤毛板在水中移动。"),
-                    EncounterFact(title: "怎么生活：慢慢漂也会捕食", text: "它们多在水体中漂游，捕食小型浮游动物。有些种类会用黏性的触手捕捉猎物。"),
-                    EncounterFact(title: "冷知识：彩虹不是它在发光", text: "你看到的彩色闪烁，多数是纤毛板运动时对光的折射，不一定是生物发光。")
+                    EncounterFact(title: "1️⃣ 它是谁：伞状的“漂浮者”", text: "它是钵水母纲的一员，身体像一把半透明的小伞，伞缘下方有细软触手。视频里这只呈粉色，在蓝色水体里特别显眼。"),
+                    EncounterFact(title: "2️⃣ 怎么生活：靠“脉动”慢慢游", text: "水母会通过伞体一张一合向前移动，但更多时候也会顺着水流漂。触手能帮助它捕捉微小浮游生物，是安静但有效的猎手。"),
+                    EncounterFact(title: "3️⃣ 冷知识：它没有鱼那样的大脑", text: "水母没有鱼类那种集中式大脑，而是依靠神经网感知环境和协调动作，所以它看起来轻飘飘，却不是随便乱飘。")
                 ],
                 artworkBase64: Self.sampleArtworkBase64(fileName: "sample_jellyfish_artwork"),
                 mediaKind: .video,
@@ -241,7 +242,7 @@ final class EncounterStore: ObservableObject {
                 location: "示例地点",
                 latitude: nil,
                 longitude: nil,
-                tags: ["透明生物", "浮游"]
+                tags: ["水母", "浮游生活"]
             )
         case .longVideo:
             return EncounterRecord(
@@ -280,6 +281,45 @@ final class EncounterStore: ObservableObject {
             return nil
         }
         return data.base64EncodedString()
+    }
+
+    private static func recordWithPersistentMedia(_ record: EncounterRecord) -> EncounterRecord {
+        var record = record
+        if let mediaURL = record.mediaURL,
+           let referenceImageURL = record.referenceImageURL,
+           mediaURL == referenceImageURL,
+           let persistentURL = persistentMediaURL(for: mediaURL) {
+            record.mediaURL = persistentURL
+            record.referenceImageURL = persistentURL
+            return record
+        }
+
+        record.mediaURL = persistentMediaURL(for: record.mediaURL)
+        record.referenceImageURL = persistentMediaURL(for: record.referenceImageURL)
+        return record
+    }
+
+    private static func persistentMediaURL(for url: URL?) -> URL? {
+        guard let url, url.isFileURL else { return url }
+        let fileManager = FileManager.default
+        let directory = mediaDirectoryURL
+        guard !url.path.hasPrefix(directory.path) else { return url }
+        guard fileManager.fileExists(atPath: url.path) else { return nil }
+
+        do {
+            try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+            let ext = url.pathExtension.isEmpty ? "dat" : url.pathExtension
+            let destination = directory.appendingPathComponent(UUID().uuidString).appendingPathExtension(ext)
+            try fileManager.copyItem(at: url, to: destination)
+            return destination
+        } catch {
+            return url
+        }
+    }
+
+    private static var mediaDirectoryURL: URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("Media", isDirectory: true)
     }
 
     private static var storageURL: URL {

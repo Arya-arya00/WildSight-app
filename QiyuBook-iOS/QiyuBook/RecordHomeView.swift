@@ -111,18 +111,6 @@ struct RecordHomeView: View {
         } message: {
             Text(errorMessage ?? "")
         }
-        .confirmationDialog("选择示例内容", isPresented: $showSamplePicker) {
-            Button("示例照片") {
-                createSample(kind: .photo)
-            }
-            Button("示例短视频") {
-                createSample(kind: .shortVideo)
-            }
-            Button("示例长视频") {
-                createSample(kind: .longVideo)
-            }
-            Button("取消", role: .cancel) {}
-        }
     }
 
     private var uploadPanel: some View {
@@ -144,6 +132,7 @@ struct RecordHomeView: View {
             VStack(spacing: 10) {
                 Button {
                     showPhotoPicker = true
+                    showSamplePicker = false
                 } label: {
                     Label(isLoadingMedia ? "识别中..." : "上传图片或视频", systemImage: "photo.on.rectangle")
                 }
@@ -151,11 +140,26 @@ struct RecordHomeView: View {
                 .disabled(isLoadingMedia)
 
                 Button {
-                    showSamplePicker = true
+                    withAnimation(.spring(response: 0.28, dampingFraction: 0.86)) {
+                        showSamplePicker.toggle()
+                    }
                 } label: {
                     Text("使用示例内容")
                 }
                 .buttonStyle(SecondaryActionButtonStyle())
+                .overlay(alignment: .top) {
+                    if showSamplePicker {
+                        SamplePickerPopover { kind in
+                            withAnimation(.easeOut(duration: 0.16)) {
+                                showSamplePicker = false
+                            }
+                            createSample(kind: kind)
+                        }
+                        .offset(y: -218)
+                        .transition(.scale(scale: 0.94, anchor: .bottom).combined(with: .opacity))
+                        .zIndex(10)
+                    }
+                }
             }
             .padding(.top, 4)
         }
@@ -480,6 +484,61 @@ struct RecordHomeView: View {
         } catch {
             return String(format: "%.4f, %.4f", coordinate.latitude, coordinate.longitude)
         }
+    }
+}
+
+private struct SamplePickerPopover: View {
+    let onSelect: (SampleContentKind) -> Void
+
+    var body: some View {
+        VStack(spacing: 10) {
+            sampleButton("示例照片") {
+                onSelect(.photo)
+            }
+            sampleButton("示例短视频") {
+                onSelect(.shortVideo)
+            }
+            sampleButton("示例长视频") {
+                onSelect(.longVideo)
+            }
+        }
+        .padding(14)
+        .frame(width: 238)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .stroke(AppTheme.line, lineWidth: 1)
+        )
+        .overlay(alignment: .bottom) {
+            SampleMenuPointer()
+                .fill(.regularMaterial)
+                .frame(width: 24, height: 13)
+                .offset(y: 12)
+        }
+        .shadow(color: AppTheme.ink.opacity(0.12), radius: 18, x: 0, y: 10)
+    }
+
+    private func sampleButton(_ title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.headline.weight(.semibold))
+                .foregroundStyle(AppTheme.ink)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+        }
+        .buttonStyle(.plain)
+        .background(AppTheme.ink.opacity(0.08), in: Capsule())
+    }
+}
+
+private struct SampleMenuPointer: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        path.closeSubpath()
+        return path
     }
 }
 

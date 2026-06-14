@@ -286,13 +286,29 @@ struct MetaPill: View {
 struct MediaPreviewSheet: View {
     @Environment(\.dismiss) private var dismiss
     let record: EncounterRecord
+    @State private var player: AVPlayer?
 
     var body: some View {
         NavigationStack {
             Group {
                 if let mediaURL = record.mediaURL, record.mediaKind == .video {
-                    VideoPlayer(player: AVPlayer(url: mediaURL))
+                    VideoPlayer(player: player)
+                        .onAppear {
+                            let player = AVPlayer(url: mediaURL)
+                            self.player = player
+                            player.play()
+                        }
+                        .onDisappear {
+                            player?.pause()
+                            player = nil
+                        }
                 } else if let mediaURL = record.mediaURL, let image = UIImage(contentsOfFile: mediaURL.path) {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.black)
+                } else if let referenceImageURL = record.referenceImageURL, let image = UIImage(contentsOfFile: referenceImageURL.path) {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
