@@ -2,6 +2,7 @@ import SwiftUI
 
 struct LibraryView: View {
     @EnvironmentObject private var store: EncounterStore
+    @State private var actionRecord: EncounterRecord?
 
     private let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -28,6 +29,13 @@ struct LibraryView: View {
                                 )
                             }
                             .buttonStyle(.plain)
+                            .simultaneousGesture(
+                                LongPressGesture(minimumDuration: 0.45)
+                                    .onEnded { _ in
+                                        actionRecord = record
+                                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                                    }
+                            )
                         }
                     }
                 }
@@ -41,6 +49,32 @@ struct LibraryView: View {
                 DetailView(record: record)
             } else {
                 ContentUnavailableView("记录不存在", systemImage: "questionmark.folder")
+            }
+        }
+        .confirmationDialog(
+            "身份卡操作",
+            isPresented: Binding(
+                get: { actionRecord != nil },
+                set: { isPresented in
+                    if !isPresented {
+                        actionRecord = nil
+                    }
+                }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("删除此记录", role: .destructive) {
+                if let id = actionRecord?.id {
+                    store.delete(id: id)
+                }
+                actionRecord = nil
+            }
+            Button("取消", role: .cancel) {
+                actionRecord = nil
+            }
+        } message: {
+            if let name = actionRecord?.name {
+                Text("将从「记录」中删除 \(name)。")
             }
         }
     }
