@@ -290,8 +290,8 @@ function identifyUserPrompt() {
     "人物彩蛋规则：",
     "- 如果图片主体明确是人物，而不是动物或自然对象，不要做人脸识别，不要猜测姓名、身份、职业、民族、健康、性格、家庭关系等敏感或不可见信息。",
     "- 可以把它当作一个温暖的小彩蛋：name 写“人类朋友”，latin 写“Homo sapiens · 人科”。status 用 unknown 或 uncertain 都可以，但 confidence 写“这是一位人类朋友”。",
-    "- summary 写一句轻松的画面描述和夸夸，例如“画面里的人看起来很明亮，像是被好好珍惜的一次遇见。”",
-    "- facts 写 2 条即可：第 1 条 title 用“1️⃣ 画面里：……”描述可见构图、动作、物品、氛围；第 2 条 title 用“2️⃣ 悄悄说：……”给一句温柔夸夸。可以说“这应该是你很在意的人”，但不要断言关系。不要评价身材、年龄或做外貌排名。第 2 条末尾自然补一句引导，例如“也可以试着上传一张自然界里的动物照片，继续认识更多有趣的生命。”",
+    "- summary 不要套用固定句式。根据画面里可见的姿态、表情、动作、物品和氛围写一句轻松描述。例如看到笑容可以写“画面里的人笑得很开心，像把快乐递到了镜头前”；看到神情安静或低落，可以写“画面里的人看起来安静了一点，像被镜头轻轻接住的一刻”。",
+    "- facts 写 2 条即可：第 1 条 title 用“1️⃣ 画面里：……”描述可见构图、动作、物品、氛围；第 2 条 title 用“2️⃣ 悄悄说：……”基于可见表情和氛围给一句温柔互动。看到开心，可以写“希望屏幕前的你也被这份开心传染一点”；看到安静、疲惫或低落，只能说“看起来有一点……”，并温柔地写“如果这是你在意的人，也许可以给 TA 一个抱抱”。不要断言真实情绪，不要断言关系，不要评价身材、年龄或做外貌排名。第 2 条末尾自然补一句引导，例如“也可以试着上传一张自然界里的动物照片，继续认识更多有趣的生命。”",
     "",
     "请只输出 JSON，不要 Markdown，不要代码块。字段必须包含：status, confidence, name, latin, summary, facts, tags。",
     "",
@@ -422,6 +422,7 @@ async function generateCardArtwork(result, sourceMedia) {
     "Image edit timed out"
   );
   if (edited) return edited;
+  if (isHumanResult(result)) return null;
 
   return await withTimeout(
     generateArtworkFromPrompt(prompt),
@@ -526,6 +527,33 @@ async function imageResultBase64(json) {
 }
 
 function artworkPrompt(result) {
+  if (isHumanResult(result)) {
+    return [
+      "Transform the uploaded portrait/person photo into a cute hand-drawn identity-card illustration.",
+      "",
+      "Most important rule:",
+      "- Use the uploaded image as the source of truth. Do not invent a different person, pose, outfit, object, hairstyle, expression, or scene.",
+      "- Preserve the main person's visible pose, direction, body angle, gesture, clothing colors, accessories, held objects, and overall composition as much as possible.",
+      "- If the person is smiling, keep the visible smile. If the expression is quiet or neutral, keep that gentle expression. Do not exaggerate emotion.",
+      "- Do not beautify into a generic model, celebrity, anime character, child/adult swap, or different age impression.",
+      "",
+      "Reference style to match:",
+      "- cute hand-drawn sticker / identity-card illustration",
+      "- soft watercolor/gouache coloring with gentle gradients",
+      "- warm dark-gray hand-drawn outline, slightly uneven ink edge",
+      "- rounded but recognizable features, simple friendly expression",
+      "- clean white or transparent-feeling background",
+      "",
+      "Composition rules:",
+      "- one main person subject from the uploaded photo",
+      "- no extra people, animals, props, labels, text, signature, frame, or background scene unless they are clearly visible and important in the original photo",
+      "- not photorealistic, not 3D, not vector-flat, not anime style",
+      "- square 1:1 image, card-ready, simple and clean",
+      `- subject hint: ${result.name}`,
+      `- observed traits: ${result.summary}`
+    ].join("\n");
+  }
+
   return [
     "Turn the uploaded animal photo into a single cute hand-drawn sticker illustration for a nature field guide card.",
     "",
@@ -551,6 +579,11 @@ function artworkPrompt(result) {
     "- not photorealistic, not 3D, not vector-flat, not anime human style",
     "- square 1:1 image, card-ready, simple and clean"
   ].join("\n");
+}
+
+function isHumanResult(result) {
+  const text = `${result?.name || ""} ${result?.latin || ""} ${result?.confidence || ""}`.toLowerCase();
+  return /人类朋友|homo sapiens|人科|human|person/.test(text);
 }
 
 async function fetchImageAsBase64(url) {
