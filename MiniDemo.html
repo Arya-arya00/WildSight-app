@@ -62,9 +62,9 @@
     }
 
     .page {
-      width: min(1180px, calc(100% - 40px));
+      width: min(1040px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 34px 0 64px;
+      padding: 28px 0 64px;
     }
 
     .topbar {
@@ -72,7 +72,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 52px;
+      margin-bottom: 30px;
     }
 
     .brand {
@@ -140,47 +140,87 @@
 
     .hero {
       display: grid;
-      grid-template-columns: minmax(360px, .92fr) minmax(430px, 1fr);
-      gap: 64px;
-      align-items: center;
+      gap: 24px;
     }
 
     .intro {
-      padding: 10px 0 28px;
+      display: grid;
+      justify-items: center;
+      padding: 4px 0 16px;
+      text-align: center;
     }
 
     h1 {
       margin: 0 0 24px;
-      font-size: 72px;
-      line-height: 1.12;
+      font-size: clamp(44px, 6.2vw, 72px);
+      line-height: 1.08;
       letter-spacing: 0;
+      white-space: nowrap;
       text-wrap: balance;
     }
 
     h1 span {
-      display: block;
+      display: inline;
     }
 
     .intro-copy {
       display: grid;
-      gap: 12px;
-      max-width: 650px;
+      gap: 8px;
+      width: min(900px, 100%);
     }
 
     .intro-copy p {
-      max-width: 620px;
+      max-width: none;
       margin: 0;
       color: var(--muted);
       font-size: 17px;
-      line-height: 1.76;
+      line-height: 1.68;
       text-wrap: pretty;
     }
 
     .meta {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 8px;
-      margin-top: 26px;
+      margin-top: 22px;
+    }
+
+    .tabs {
+      display: inline-flex;
+      justify-self: center;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface) 82%, transparent);
+      border: 1px solid color-mix(in srgb, var(--line) 76%, transparent);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .tab-button {
+      min-width: 118px;
+      min-height: 42px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 760;
+    }
+
+    .tab-button.is-active {
+      background: var(--surface-strong);
+      color: var(--bg);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.is-active {
+      display: block;
     }
 
     .tag {
@@ -197,6 +237,8 @@
 
     .demo-shell {
       position: relative;
+      width: min(760px, 100%);
+      margin: 0 auto;
       border-radius: 22px;
       background:
         linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--surface) 90%, var(--surface-soft))),
@@ -234,8 +276,8 @@
       position: relative;
       display: grid;
       place-items: center;
-      min-height: 264px;
-      padding: 30px;
+      min-height: 166px;
+      padding: 22px 24px;
       border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--line));
       border-radius: 20px;
       background:
@@ -263,47 +305,27 @@
     .upload-icon {
       display: grid;
       place-items: center;
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 22px;
-      border-radius: 18px;
-      background:
-        linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--surface-soft) 52%, var(--surface)));
-      color: var(--accent);
-      box-shadow: inset 0 0 0 1px var(--line), var(--shadow-soft);
+      width: 94px;
+      height: 94px;
+      margin: 0 auto 12px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: transparent;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .upload-icon img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
     }
 
     .upload-copy strong {
       display: block;
-      margin-bottom: 10px;
-      font-size: 24px;
-      line-height: 1.2;
-    }
-
-    .upload-copy span {
-      display: block;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.68;
-    }
-
-    .primary-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      min-height: 56px;
-      margin-top: 16px;
-      border-radius: 16px;
-      background: var(--surface-strong);
-      color: var(--bg);
-      font-weight: 760;
-      font-size: 16px;
-    }
-
-    .primary-button:not(:disabled):hover {
-      background: color-mix(in srgb, var(--surface-strong) 92%, var(--accent));
+      color: var(--ink);
+      font-size: 22px;
+      line-height: 1.38;
     }
 
     .reset-button:not(:disabled):hover {
@@ -312,11 +334,6 @@
 
     .reset-button:disabled {
       display: none;
-    }
-
-    .primary-button:disabled {
-      cursor: not-allowed;
-      opacity: .55;
     }
 
     .status-card,
@@ -530,11 +547,13 @@
 
     .records {
       display: none;
-      margin-top: 16px;
-      padding: 18px;
-      border-radius: 18px;
+      width: 100%;
+      margin-top: 0;
+      padding: 22px;
+      border-radius: 22px;
       background: var(--surface);
-      box-shadow: inset 0 0 0 1px var(--line);
+      box-shadow: var(--shadow);
+      border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
     }
 
     .records.is-visible {
@@ -543,14 +562,14 @@
 
     .records h2 {
       margin: 0 0 14px;
-      font-size: 20px;
+      font-size: 28px;
       line-height: 1.25;
     }
 
     .record-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
     }
 
     .record-card {
@@ -599,6 +618,16 @@
       line-height: 1.35;
     }
 
+    .empty-records {
+      grid-column: 1 / -1;
+      padding: 38px 18px;
+      border-radius: 18px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+    }
+
     .spinner {
       width: 16px;
       height: 16px;
@@ -634,12 +663,7 @@
       }
 
       .topbar {
-        margin-bottom: 28px;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-        gap: 24px;
+        margin-bottom: 24px;
       }
 
       .intro {
@@ -648,8 +672,8 @@
 
       h1 {
         max-width: none;
-        font-size: 44px;
-        line-height: 1.08;
+        font-size: clamp(38px, 10vw, 48px);
+        line-height: 1.1;
       }
 
       .intro-copy p {
@@ -665,6 +689,10 @@
       .demo-head {
         right: 18px;
       }
+
+      .record-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 520px) {
@@ -677,24 +705,28 @@
         white-space: normal;
       }
 
+      .tabs {
+        width: 100%;
+      }
+
+      .tab-button {
+        flex: 1;
+        min-width: 0;
+      }
+
       .reset-button {
         min-height: 32px;
         padding-inline: 12px;
       }
 
       .dropzone {
-        min-height: 236px;
+        min-height: 142px;
         padding: 22px 18px;
       }
 
       .upload-icon {
-        width: 62px;
-        height: 62px;
-        border-radius: 16px;
-      }
-
-      .upload-copy strong {
-        font-size: 21px;
+        width: 76px;
+        height: 76px;
       }
 
       .result-title {
@@ -706,7 +738,7 @@
       }
 
       .record-grid {
-        grid-template-columns: 1fr;
+        gap: 10px;
       }
     }
 
@@ -749,62 +781,62 @@
         </div>
       </div>
 
-      <section class="demo-shell" aria-label="在线体验">
-        <div class="demo-head">
-          <button id="resetButton" class="reset-button" type="button" disabled>重新上传</button>
-        </div>
+      <nav class="tabs" aria-label="识野 demo">
+        <button id="recognizeTab" class="tab-button is-active" type="button">认识</button>
+        <button id="recordsTab" class="tab-button" type="button">记录</button>
+      </nav>
 
-        <div class="panel">
-          <label id="dropzone" class="dropzone" for="mediaInput">
-            <input id="mediaInput" type="file" accept="image/*,video/*" />
-            <span class="upload-copy">
-              <span class="upload-icon" aria-hidden="true">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-                  <path d="M4 17.5V6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5Z" stroke="currentColor" stroke-width="1.8"/>
-                  <path d="m7.5 16 3.2-3.2a1.4 1.4 0 0 1 2 0L16.5 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M16.4 9.2h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <strong>上传图片或视频</strong>
-              <span>上传动物的图片或视频，我会带你认识它。</span>
-            </span>
-          </label>
+      <section id="recognizePanel" class="tab-panel is-active" aria-label="认识">
+        <section class="demo-shell" aria-label="在线体验">
+          <div class="demo-head">
+            <button id="resetButton" class="reset-button" type="button" disabled>重新上传</button>
+          </div>
 
-          <button id="identifyButton" class="primary-button" type="button" disabled>
-            <span>上传后自动识别</span>
-          </button>
-
-          <div id="statusCard" class="status-card" role="status" aria-live="polite"></div>
-
-          <article id="result" class="result" aria-label="识别结果">
-            <div class="artwork">
-              <img id="artworkImage" class="hidden" alt="生成的手绘身份卡" />
-              <div id="artworkPlaceholder" class="artwork-placeholder">
-                <span>
-                  <strong>正在绘制身份卡</strong>
-                  识别结果已生成，身份卡会在完成后自动出现。
+          <div class="panel">
+            <label id="dropzone" class="dropzone" for="mediaInput">
+              <input id="mediaInput" type="file" accept="image/*,video/*" />
+              <span class="upload-copy">
+                <span class="upload-icon" aria-hidden="true">
+                  <img src="assets/wildsight-upload-icon.png" alt="" />
                 </span>
-              </div>
-            </div>
-            <div class="result-body">
-              <div class="result-title">
-                <h2 id="resultName">识别结果</h2>
-                <span id="resultConfidence" class="confidence">判断中</span>
-              </div>
-              <p id="resultLatin" class="latin"></p>
-              <p id="resultSummary" class="summary"></p>
-              <ul id="facts" class="facts"></ul>
-              <div id="resultTags" class="result-tags"></div>
-              <button id="saveButton" class="save-button" type="button">保存这张身份卡</button>
-              <div id="savedNote" class="saved-note">已在「记录」中保存了你认识的新朋友。</div>
-            </div>
-          </article>
+                <strong>上传动物的图片或视频，我会带你认识它。</strong>
+              </span>
+            </label>
 
-          <section id="records" class="records" aria-label="记录">
-            <h2>每次遇见都会记录在此</h2>
-            <div id="recordGrid" class="record-grid"></div>
-          </section>
-        </div>
+            <div id="statusCard" class="status-card" role="status" aria-live="polite"></div>
+
+            <article id="result" class="result" aria-label="识别结果">
+              <div class="artwork">
+                <img id="artworkImage" class="hidden" alt="生成的手绘身份卡" />
+                <div id="artworkPlaceholder" class="artwork-placeholder">
+                  <span>
+                    <strong>正在绘制身份卡</strong>
+                    识别结果已生成，身份卡会在完成后自动出现。
+                  </span>
+                </div>
+              </div>
+              <div class="result-body">
+                <div class="result-title">
+                  <h2 id="resultName">识别结果</h2>
+                  <span id="resultConfidence" class="confidence">判断中</span>
+                </div>
+                <p id="resultLatin" class="latin"></p>
+                <p id="resultSummary" class="summary"></p>
+                <ul id="facts" class="facts"></ul>
+                <div id="resultTags" class="result-tags"></div>
+                <button id="saveButton" class="save-button" type="button">保存这张身份卡</button>
+                <div id="savedNote" class="saved-note">已在「记录」中保存了你认识的新朋友。</div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section id="recordsPanel" class="tab-panel" aria-label="记录">
+        <section id="records" class="records" aria-label="记录">
+          <h2>每次遇见都会记录在此</h2>
+          <div id="recordGrid" class="record-grid"></div>
+        </section>
       </section>
     </section>
   </main>
@@ -815,7 +847,6 @@
     const JPEG_QUALITY = 0.84;
 
     const mediaInput = document.getElementById("mediaInput");
-    const identifyButton = document.getElementById("identifyButton");
     const resetButton = document.getElementById("resetButton");
     const dropzone = document.getElementById("dropzone");
     const serviceState = document.getElementById("serviceState");
@@ -833,6 +864,10 @@
     const savedNote = document.getElementById("savedNote");
     const records = document.getElementById("records");
     const recordGrid = document.getElementById("recordGrid");
+    const recognizeTab = document.getElementById("recognizeTab");
+    const recordsTab = document.getElementById("recordsTab");
+    const recognizePanel = document.getElementById("recognizePanel");
+    const recordsPanel = document.getElementById("recordsPanel");
 
     let selectedFile = null;
     let compressedFile = null;
@@ -852,13 +887,10 @@
       await prepareFile(file);
     });
 
-    identifyButton.addEventListener("click", () => {
-      if (busy || !compressedFile) return;
-      identifySelectedImage();
-    });
-
     resetButton.addEventListener("click", resetDemo);
     saveButton.addEventListener("click", saveCurrentCard);
+    recognizeTab.addEventListener("click", () => switchTab("recognize"));
+    recordsTab.addEventListener("click", () => switchTab("records"));
 
     ["dragenter", "dragover"].forEach((eventName) => {
       dropzone.addEventListener(eventName, (event) => {
@@ -902,13 +934,10 @@
       busy = true;
       selectedFile = file;
       const isVideo = file.type.startsWith("video/");
-      setButtonLoading(isVideo ? "正在截取画面" : "正在准备图片");
       showStatus(isVideo ? "正在从视频里截取画面。" : "正在准备图片。", 16);
 
       try {
         compressedFile = isVideo ? await frameFromVideo(file) : await compressImage(file);
-        identifyButton.disabled = true;
-        identifyButton.innerHTML = "<span>正在识别</span>";
         resetButton.disabled = false;
         showStatus("开始识别。", 24);
         await identifySelectedImage();
@@ -924,9 +953,7 @@
     async function identifySelectedImage() {
       busy = true;
       const currentRunId = ++runId;
-      identifyButton.disabled = true;
       resetButton.disabled = true;
-      setButtonLoading("正在识别");
       hideResult();
       showStatus("正在识别。", 38);
       startStatusLoop([
@@ -940,15 +967,11 @@
         stopStatusLoop();
         renderResult(identifyResult);
         showStatus("识别完成，正在绘制身份卡。", 68);
-        identifyButton.disabled = false;
-        identifyButton.innerHTML = "<span>重新识别</span>";
         resetButton.disabled = false;
         generateArtwork(identifyResult, compressedFile, currentRunId);
       } catch (error) {
         stopStatusLoop();
         showError(error.message || "识别失败，请稍后再试。");
-        identifyButton.disabled = false;
-        identifyButton.innerHTML = "<span>重新识别</span>";
         resetButton.disabled = false;
       } finally {
         busy = false;
@@ -1009,8 +1032,6 @@
         artworkPlaceholder.innerHTML = "<span><strong>身份卡暂时没有生成</strong>识别内容可以先查看。</span>";
         showError(error.message || "身份卡生成失败。识别结果已保留。");
       } finally {
-        identifyButton.disabled = false;
-        identifyButton.innerHTML = "<span>重新识别</span>";
         resetButton.disabled = false;
       }
     }
@@ -1090,8 +1111,6 @@
       hideResult();
       statusCard.className = "status-card";
       statusCard.textContent = "";
-      identifyButton.disabled = true;
-      identifyButton.innerHTML = "<span>上传后自动识别</span>";
       resetButton.disabled = true;
     }
 
@@ -1113,6 +1132,7 @@
       savedNote.classList.add("is-visible");
       showStatus("身份卡已保存。", 100);
       renderRecords(record.id);
+      switchTab("records");
     }
 
     function updateSavedArtwork(src) {
@@ -1144,12 +1164,14 @@
     }
 
     function renderRecords(highlightId = "") {
+      records.classList.add("is-visible");
       if (!savedRecords.length) {
-        records.classList.remove("is-visible");
-        recordGrid.replaceChildren();
+        const empty = document.createElement("div");
+        empty.className = "empty-records";
+        empty.textContent = "保存后的身份卡会出现在这里。";
+        recordGrid.replaceChildren(empty);
         return;
       }
-      records.classList.add("is-visible");
       recordGrid.replaceChildren(...savedRecords.map((record) => {
         const card = document.createElement("article");
         card.className = `record-card${record.id === highlightId ? " is-new" : ""}`;
@@ -1174,6 +1196,19 @@
       }));
     }
 
+    function switchTab(tab) {
+      const showRecords = tab === "records";
+      recognizeTab.classList.toggle("is-active", !showRecords);
+      recordsTab.classList.toggle("is-active", showRecords);
+      recognizePanel.classList.toggle("is-active", !showRecords);
+      recordsPanel.classList.toggle("is-active", showRecords);
+      recognizeTab.setAttribute("aria-selected", String(!showRecords));
+      recordsTab.setAttribute("aria-selected", String(showRecords));
+      if (showRecords) {
+        renderRecords(savedLatestId);
+      }
+    }
+
     function showStatus(message, progress) {
       statusCard.className = "status-card is-visible";
       statusCard.innerHTML = `
@@ -1192,10 +1227,6 @@
 
     function clearError() {
       statusCard.classList.remove("is-error");
-    }
-
-    function setButtonLoading(label) {
-      identifyButton.innerHTML = `<span class="spinner" aria-hidden="true"></span><span>${escapeHTML(label)}</span>`;
     }
 
     async function compressImage(file) {
