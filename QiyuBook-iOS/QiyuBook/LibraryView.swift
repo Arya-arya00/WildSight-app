@@ -1,8 +1,10 @@
 import SwiftUI
+import UIKit
 
 struct LibraryView: View {
     @EnvironmentObject private var store: EncounterStore
     @State private var actionRecord: EncounterRecord?
+    @State private var activeRecord: ActiveRecord?
 
     private let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -22,20 +24,41 @@ struct LibraryView: View {
 
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(store.records) { record in
-                            NavigationLink(value: record.id) {
+                            ZStack(alignment: .top) {
                                 EncounterCard(
                                     record: record,
                                     isHighlighted: store.highlightedRecordID == record.id
                                 )
-                            }
-                            .buttonStyle(.plain)
-                            .simultaneousGesture(
-                                LongPressGesture(minimumDuration: 0.45)
-                                    .onEnded { _ in
-                                        actionRecord = record
-                                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                                .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                                .gesture(
+                                    ExclusiveGesture(
+                                        LongPressGesture(minimumDuration: 0.45),
+                                        TapGesture()
+                                    )
+                                    .onEnded { value in
+                                        switch value {
+                                        case .first:
+                                            actionRecord = record
+                                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                                        case .second:
+                                            activeRecord = ActiveRecord(id: record.id)
+                                        }
                                     }
-                            )
+                                )
+
+                                if actionRecord?.id == record.id {
+                                    RecordActionPopover(record: record) {
+                                        store.delete(id: record.id)
+                                        actionRecord = nil
+                                    } onCancel: {
+                                        actionRecord = nil
+                                    }
+                                    .offset(y: -106)
+                                    .transition(.scale(scale: 0.92, anchor: .bottom).combined(with: .opacity))
+                                    .zIndex(20)
+                                }
+                            }
+                            .zIndex(actionRecord?.id == record.id ? 10 : 0)
                         }
                     }
                 }
@@ -44,39 +67,74 @@ struct LibraryView: View {
         }
         .navigationTitle("记录")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(for: UUID.self) { id in
-            if let record = store.record(id: id) {
+        .navigationDestination(item: $activeRecord) { active in
+            if let record = store.record(id: active.id) {
                 DetailView(record: record)
             } else {
                 ContentUnavailableView("记录不存在", systemImage: "questionmark.folder")
             }
         }
-        .confirmationDialog(
-            "身份卡操作",
-            isPresented: Binding(
-                get: { actionRecord != nil },
-                set: { isPresented in
-                    if !isPresented {
-                        actionRecord = nil
-                    }
-                }
-            ),
-            titleVisibility: .visible
-        ) {
-            Button("删除此记录", role: .destructive) {
-                if let id = actionRecord?.id {
-                    store.delete(id: id)
-                }
-                actionRecord = nil
+    }
+}
+
+private struct RecordActionPopover: View {
+    let record: EncounterRecord
+    let onDelete: () -> Void
+    let onCancel: () -> Void
+
+    var body: some View {
+        VStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("身份卡操作")
+                    .font(.subheadline.weight(.bold))
+                    .foregroundStyle(AppTheme.ink)
+                Text("将从「记录」中删除 \(record.name)。")
+                    .font(.caption)
+                    .foregroundStyle(AppTheme.secondaryText)
+                    .lineLimit(2)
             }
-            Button("取消", role: .cancel) {
-                actionRecord = nil
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button(role: .destructive, action: onDelete) {
+                Text("删除此记录")
+                    .font(.subheadline.weight(.bold))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
             }
-        } message: {
-            if let name = actionRecord?.name {
-                Text("将从「记录」中删除 \(name)。")
-            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.red)
+            .background(.regularMaterial, in: Capsule())
+            .overlay(Capsule().stroke(AppTheme.line, lineWidth: 1))
+
+            Button("取消", action: onCancel)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.secondaryText)
         }
+        .padding(14)
+        .frame(width: 210)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .stroke(AppTheme.line, lineWidth: 1)
+        )
+        .overlay(alignment: .bottom) {
+            TrianglePointer()
+                .fill(.regularMaterial)
+                .frame(width: 22, height: 12)
+                .offset(y: 11)
+        }
+        .shadow(color: AppTheme.ink.opacity(0.14), radius: 18, x: 0, y: 10)
+    }
+}
+
+private struct TrianglePointer: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        path.closeSubpath()
+        return path
     }
 }
 
