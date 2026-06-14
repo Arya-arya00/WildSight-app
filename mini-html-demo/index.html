@@ -349,20 +349,16 @@
     }
 
     .upload-menu {
-      position: absolute;
-      left: 50%;
-      top: calc(100% - 18px);
+      position: fixed;
       z-index: 20;
       display: grid;
       gap: 6px;
-      width: min(280px, calc(100% - 40px));
       padding: 8px;
       border-radius: 18px;
       background: color-mix(in srgb, var(--surface) 94%, transparent);
       border: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
       box-shadow: var(--shadow);
       backdrop-filter: blur(18px);
-      transform: translateX(-50%);
     }
 
     .upload-menu[hidden] {
@@ -385,12 +381,6 @@
 
     .upload-menu button:hover {
       background: var(--surface-soft);
-    }
-
-    .upload-menu span {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 650;
     }
 
     .reset-button:not(:disabled):hover {
@@ -959,7 +949,7 @@
       <div class="intro">
         <h1 aria-label="让好奇识得万物"><span aria-hidden="true">让好奇</span><span aria-hidden="true">识得万物</span></h1>
         <div class="intro-copy">
-          <p>希望通过有趣的科普内容，让你对和这个地球上每一个生命的相遇都充满好奇。</p>
+          <p>希望通过有趣的科普内容，让你对地球上的每一次生命的相遇，都充满好奇…</p>
         </div>
         <div class="meta" aria-label="项目能力">
           <span class="tag">动物</span>
@@ -988,8 +978,8 @@
                 <strong>上传动物的图片或视频，我会带你认识它。</strong>
               </span>
               <div id="uploadMenu" class="upload-menu" role="menu" hidden>
-                <button id="chooseMediaButton" type="button" role="menuitem">照片图库 <span>上传图片或视频</span></button>
-                <button id="sampleImageButton" type="button" role="menuitem">示例图片 <span>海龟</span></button>
+                <button id="chooseMediaButton" type="button" role="menuitem">从照片图库选择</button>
+                <button id="sampleImageButton" type="button" role="menuitem">使用示例图片</button>
               </div>
             </div>
 
@@ -1025,7 +1015,7 @@
       <section id="recordsPanel" class="tab-panel" aria-label="记录">
         <section id="records" class="records" aria-label="记录">
           <h2>每次遇见都会记录在此</h2>
-          <p class="records-note">当前版本暂不支持对保存的身份卡进行分类，别急这个模块已经在构思中啦～</p>
+          <p class="records-note">当前版本在不支持对保存的身份卡进行分类</p>
           <div id="recordGrid" class="record-grid"></div>
         </section>
       </section>
@@ -1178,13 +1168,25 @@
 
     function toggleUploadMenu() {
       if (busy) return;
-      uploadMenu.hidden = !uploadMenu.hidden;
+      const willOpen = uploadMenu.hidden;
+      uploadMenu.hidden = !willOpen;
+      if (willOpen) positionUploadMenu();
       dropzone.setAttribute("aria-expanded", String(!uploadMenu.hidden));
     }
 
     function closeUploadMenu() {
       uploadMenu.hidden = true;
       dropzone.setAttribute("aria-expanded", "false");
+    }
+
+    function positionUploadMenu() {
+      const rect = dropzone.getBoundingClientRect();
+      const width = Math.min(280, Math.max(220, rect.width - 40));
+      const left = rect.left + rect.width / 2 - width / 2;
+      const top = rect.bottom - 18;
+      uploadMenu.style.width = `${width}px`;
+      uploadMenu.style.left = `${Math.max(12, Math.min(left, window.innerWidth - width - 12))}px`;
+      uploadMenu.style.top = `${Math.max(12, Math.min(top, window.innerHeight - 120))}px`;
     }
 
     async function useSampleImage(event) {
