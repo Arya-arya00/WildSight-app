@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>demo-video</title>
+  <title>WildSight APP Demo-Video</title>
   <style>
     :root {
       --bg: #f5f7f2;
@@ -56,7 +56,9 @@
     .badge {
       color: var(--muted);
       font-size: 14px;
-      white-space: nowrap;
+      line-height: 1.6;
+      max-width: min(520px, 52vw);
+      text-align: right;
     }
 
     .player {
@@ -72,13 +74,6 @@
       width: 100%;
       max-height: min(72vh, 720px);
       background: #0b0f0c;
-    }
-
-    .fallback {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
     }
 
     @media (max-width: 620px) {
@@ -97,6 +92,8 @@
       .badge {
         display: block;
         margin-top: 6px;
+        max-width: 100%;
+        text-align: left;
       }
     }
   </style>
@@ -104,8 +101,8 @@
 <body>
   <main>
     <div class="title">
-      <h1>demo-video</h1>
-      <span class="badge">WildSight</span>
+      <h1>WildSight APP Demo-Video</h1>
+      <span class="badge">移动端视频加载较慢，请耐心等待～为保障体验，推荐使用PC端浏览。</span>
     </div>
     <section class="player" aria-label="demo-video 播放器">
       <video controls preload="auto" playsinline webkit-playsinline x5-video-player-type="h5">
@@ -113,7 +110,6 @@
         当前浏览器不支持在线播放此视频。
       </video>
     </section>
-    <p class="fallback">如果视频没有自动载入，请刷新页面后重试。</p>
   </main>
 </body>
 </html>
