@@ -42,6 +42,7 @@ struct RecordHomeView: View {
     @State private var selectedItem: PhotosPickerItem?
     @State private var isLoadingMedia = false
     @State private var activeResult: ActiveRecord?
+    @State private var activeDraft: EncounterRecord?
     @State private var pendingTrim: PickedMedia?
     @State private var errorMessage: String?
     @State private var showPhotoPicker = false
@@ -55,7 +56,7 @@ struct RecordHomeView: View {
                 VStack(spacing: 34) {
                     BrandHeader(
                         eyebrow: "",
-                        title: "让好奇，识得万物。"
+                        title: "让好奇识得万物"
                     )
                     .padding(.top, 18)
 
@@ -83,6 +84,9 @@ struct RecordHomeView: View {
             if let record = store.record(id: active.id) {
                 ResultView(record: record)
             }
+        }
+        .navigationDestination(item: $activeDraft) { draft in
+            ResultView(record: draft, isSaved: false)
         }
         .sheet(item: $pendingTrim) { media in
             TrimSelectionView(media: media) { start, end in
@@ -272,10 +276,9 @@ struct RecordHomeView: View {
                 trimStart: trimStart,
                 trimEnd: trimEnd
             )
-            let record: EncounterRecord
             if let response {
                 try validate(response: response, mediaKind: mediaKind)
-                record = store.createRecord(
+                activeDraft = store.draftRecord(
                     from: response,
                     mediaKind: mediaKind,
                     mediaURL: mediaURL,
@@ -288,9 +291,9 @@ struct RecordHomeView: View {
                     trimEnd: trimEnd
                 )
             } else {
-                record = store.createMockRecord(mediaKind: mediaKind, mediaURL: mediaURL, referenceImageURL: preparedMedia.referenceImageURL, trimStart: trimStart, trimEnd: trimEnd)
+                let record = store.createMockRecord(mediaKind: mediaKind, mediaURL: mediaURL, referenceImageURL: preparedMedia.referenceImageURL, trimStart: trimStart, trimEnd: trimEnd)
+                activeResult = ActiveRecord(id: record.id)
             }
-            activeResult = ActiveRecord(id: record.id)
         } catch {
             errorMessage = error.localizedDescription
         }

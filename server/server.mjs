@@ -443,7 +443,7 @@ async function tryGenerateArtworkFromSource(prompt, sourceMedia) {
   const imageBlob = new Blob([sourceMedia.buffer], { type: sourceMedia.contentType });
   form.append("model", currentImageModel());
   form.append("prompt", prompt);
-  form.append("size", "1024x1024");
+  form.append("size", imageSize());
   form.append("n", "1");
   form.append("quality", imageQuality());
   form.append("output_format", "jpeg");
@@ -471,7 +471,7 @@ async function generateArtworkFromPrompt(prompt) {
   const payload = {
     model: currentImageModel(),
     prompt,
-    size: "1024x1024",
+    size: imageSize(),
     n: 1,
     quality: imageQuality(),
     output_format: "jpeg"
@@ -508,7 +508,7 @@ async function generateArtworkFromPromptWithoutSpeedOptions(prompt) {
     body: JSON.stringify({
       model: currentImageModel(),
       prompt,
-      size: "1024x1024",
+      size: imageSize(),
       n: 1
     })
   });
@@ -524,6 +524,10 @@ async function generateArtworkFromPromptWithoutSpeedOptions(prompt) {
 
 function imageQuality() {
   return process.env.OPENAI_IMAGE_QUALITY || "low";
+}
+
+function imageSize() {
+  return process.env.OPENAI_IMAGE_SIZE || "1536x1024";
 }
 
 async function imageResultBase64(json) {
@@ -555,14 +559,14 @@ function artworkPrompt(result) {
       "- one main person subject from the uploaded photo",
       "- no extra people, animals, props, labels, text, signature, frame, or background scene unless they are clearly visible and important in the original photo",
       "- not photorealistic, not 3D, not vector-flat, not anime style",
-      "- square 1:1 image, card-ready, simple and clean",
+      "- landscape 4:3 identity-card image, rounded-card friendly, simple and clean",
       `- subject hint: ${result.name}`,
       `- observed traits: ${result.summary}`
     ].join("\n");
   }
 
   return [
-    "Turn the uploaded animal photo into a single cute hand-drawn sticker illustration for a nature field guide card.",
+    "Turn the uploaded animal photo into a single cute hand-drawn sticker illustration for a nature identity card.",
     "",
     "Reference style to match:",
     "- kawaii marine-animal sticker sheet feeling",
@@ -584,7 +588,7 @@ function artworkPrompt(result) {
     "- one centered subject, full body if visible",
     "- no extra animals, shells, stars, bubbles, props, labels, text, signature, frame, or background scene",
     "- not photorealistic, not 3D, not vector-flat, not anime human style",
-    "- square 1:1 image, card-ready, simple and clean"
+    "- landscape 4:3 identity-card image, rounded-card friendly, simple and clean"
   ].join("\n");
 }
 

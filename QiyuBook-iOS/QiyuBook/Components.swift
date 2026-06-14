@@ -35,65 +35,70 @@ struct GeneratedCardArt: View {
     var isGeneratingArtwork = false
     var compact = false
     var mediaLabel: String?
-    var loadingText = "正在绘制记录卡"
+    var loadingText = "正在绘制身份卡"
     var onPreview: (() -> Void)?
 
     var body: some View {
-        ZStack {
-            if let image = generatedImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(compact ? 8 : 12)
-                    .background(AppTheme.card)
-            } else if let sourceImage {
-                ZStack {
-                    Image(uiImage: sourceImage)
+        GeometryReader { proxy in
+            let size = proxy.size
+
+            ZStack {
+                if let image = generatedImage {
+                    Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(width: size.width, height: size.height)
                         .clipped()
-                        .blur(radius: compact ? 8 : 14)
-                        .saturation(0.72)
-                        .opacity(0.78)
+                        .background(AppTheme.card)
+                } else if let sourceImage {
+                    ZStack {
+                        Image(uiImage: sourceImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: size.width, height: size.height)
+                            .clipped()
+                            .blur(radius: compact ? 8 : 14)
+                            .saturation(0.72)
+                            .opacity(0.78)
 
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
+                        Rectangle()
+                            .fill(.ultraThinMaterial)
 
-                    if isGeneratingArtwork {
-                        VStack(spacing: compact ? 6 : 10) {
-                            ProgressView()
-                                .controlSize(compact ? .small : .regular)
-                                .tint(AppTheme.ink)
-                            Text(loadingText)
-                                .font((compact ? Font.caption2 : Font.caption).weight(.semibold))
-                                .foregroundStyle(AppTheme.ink)
+                        if isGeneratingArtwork {
+                            VStack(spacing: compact ? 6 : 10) {
+                                ProgressView()
+                                    .controlSize(compact ? .small : .regular)
+                                    .tint(AppTheme.ink)
+                                Text(loadingText)
+                                    .font((compact ? Font.caption2 : Font.caption).weight(.semibold))
+                                    .foregroundStyle(AppTheme.ink)
+                            }
+                            .padding(.horizontal, compact ? 10 : 16)
+                            .padding(.vertical, compact ? 8 : 12)
+                            .background(.regularMaterial, in: Capsule())
+                            .overlay(Capsule().stroke(AppTheme.line, lineWidth: 1))
                         }
-                        .padding(.horizontal, compact ? 10 : 16)
-                        .padding(.vertical, compact ? 8 : 12)
-                        .background(.regularMaterial, in: Capsule())
-                        .overlay(Capsule().stroke(AppTheme.line, lineWidth: 1))
                     }
+                } else {
+                    MockCardArt(compact: compact)
                 }
-            } else {
-                MockCardArt(compact: compact)
-            }
 
-            if let mediaLabel, let onPreview {
-                Button(action: onPreview) {
-                    Label("原\(mediaLabel)", systemImage: mediaLabel == "视频" ? "play.rectangle" : "photo")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(AppTheme.ink)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(.regularMaterial, in: Capsule())
-                        .overlay(Capsule().stroke(AppTheme.ink.opacity(0.08), lineWidth: 1))
+                if let mediaLabel, let onPreview {
+                    Button(action: onPreview) {
+                        Label("原\(mediaLabel)", systemImage: mediaLabel == "视频" ? "play.rectangle" : "photo")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(AppTheme.ink)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(.regularMaterial, in: Capsule())
+                            .overlay(Capsule().stroke(AppTheme.ink.opacity(0.08), lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    .padding(compact ? 10 : 14)
                 }
-                .buttonStyle(.plain)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                .padding(compact ? 10 : 14)
             }
+            .frame(width: size.width, height: size.height)
         }
         .clipShape(RoundedRectangle(cornerRadius: compact ? 18 : 30, style: .continuous))
         .overlay(

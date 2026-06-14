@@ -3,9 +3,22 @@ import SwiftUI
 
 final class EncounterStore: ObservableObject {
     @Published private(set) var records: [EncounterRecord] = EncounterStore.loadRecords()
+    @Published var highlightedRecordID: UUID?
 
     func record(id: UUID) -> EncounterRecord? {
         records.first { $0.id == id }
+    }
+
+    @discardableResult
+    func save(_ record: EncounterRecord) -> EncounterRecord {
+        if let index = records.firstIndex(where: { $0.id == record.id }) {
+            records[index] = record
+            persist()
+            return records[index]
+        }
+        records.insert(record, at: 0)
+        persist()
+        return record
     }
 
     @discardableResult
@@ -50,7 +63,36 @@ final class EncounterStore: ObservableObject {
         trimStart: Double? = nil,
         trimEnd: Double? = nil
     ) -> EncounterRecord {
-        let record = EncounterRecord(
+        let record = draftRecord(
+            from: response,
+            mediaKind: mediaKind,
+            mediaURL: mediaURL,
+            referenceImageURL: referenceImageURL,
+            observedAt: observedAt,
+            location: location,
+            latitude: latitude,
+            longitude: longitude,
+            trimStart: trimStart,
+            trimEnd: trimEnd
+        )
+        records.insert(record, at: 0)
+        persist()
+        return record
+    }
+
+    func draftRecord(
+        from response: IdentifyResponse,
+        mediaKind: MediaKind,
+        mediaURL: URL? = nil,
+        referenceImageURL: URL? = nil,
+        observedAt: String? = nil,
+        location: String? = nil,
+        latitude: Double? = nil,
+        longitude: Double? = nil,
+        trimStart: Double? = nil,
+        trimEnd: Double? = nil
+    ) -> EncounterRecord {
+        EncounterRecord(
             name: response.name,
             latin: response.latin ?? "分类待确认",
             confidence: response.confidence ?? "不确定",
@@ -68,9 +110,6 @@ final class EncounterStore: ObservableObject {
             trimStart: trimStart,
             trimEnd: trimEnd
         )
-        records.insert(record, at: 0)
-        persist()
-        return record
     }
 
     func update(_ record: EncounterRecord) {
@@ -88,7 +127,14 @@ final class EncounterStore: ObservableObject {
 
     func delete(id: UUID) {
         records.removeAll { $0.id == id }
+        if highlightedRecordID == id {
+            highlightedRecordID = nil
+        }
         persist()
+    }
+
+    func highlightSavedRecord(id: UUID) {
+        highlightedRecordID = id
     }
 
     static func nowText() -> String {

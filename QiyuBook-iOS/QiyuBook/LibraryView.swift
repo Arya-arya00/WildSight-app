@@ -22,7 +22,10 @@ struct LibraryView: View {
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(store.records) { record in
                             NavigationLink(value: record.id) {
-                                EncounterCard(record: record)
+                                EncounterCard(
+                                    record: record,
+                                    isHighlighted: store.highlightedRecordID == record.id
+                                )
                             }
                             .buttonStyle(.plain)
                         }
@@ -45,6 +48,7 @@ struct LibraryView: View {
 
 struct EncounterCard: View {
     let record: EncounterRecord
+    var isHighlighted = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 9) {
@@ -84,6 +88,18 @@ struct EncounterCard: View {
         .padding(9)
         .frame(maxWidth: .infinity, alignment: .leading)
         .cardSurface(cornerRadius: 18)
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(isHighlighted ? AppTheme.kelp : .clear, lineWidth: 2.5)
+        )
+        .shadow(
+            color: isHighlighted ? AppTheme.kelp.opacity(0.22) : .clear,
+            radius: isHighlighted ? 16 : 0,
+            x: 0,
+            y: isHighlighted ? 8 : 0
+        )
+        .scaleEffect(isHighlighted ? 1.025 : 1)
+        .animation(.spring(response: 0.34, dampingFraction: 0.82), value: isHighlighted)
     }
 }
 
