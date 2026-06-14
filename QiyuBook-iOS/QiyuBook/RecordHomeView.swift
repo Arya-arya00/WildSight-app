@@ -113,13 +113,13 @@ struct RecordHomeView: View {
         }
         .confirmationDialog("选择示例内容", isPresented: $showSamplePicker) {
             Button("示例照片") {
-                createSample(kind: .image)
+                createSample(kind: .photo)
             }
             Button("示例短视频") {
-                createSample(kind: .video)
+                createSample(kind: .shortVideo)
             }
-            Button("示例长视频，进入裁剪") {
-                pendingTrim = PickedMedia(kind: .video, url: nil, isLongVideo: true, duration: 42, metadata: .empty, referenceImageURL: nil)
+            Button("示例长视频") {
+                createSample(kind: .longVideo)
             }
             Button("取消", role: .cancel) {}
         }
@@ -164,9 +164,8 @@ struct RecordHomeView: View {
             .cardSurface(cornerRadius: 24)
     }
 
-    private func createSample(kind: MediaKind) {
-        let record = store.createMockRecord(mediaKind: kind)
-        activeResult = ActiveRecord(id: record.id)
+    private func createSample(kind: SampleContentKind) {
+        activeDraft = store.sampleDraft(kind: kind)
     }
 
     @MainActor

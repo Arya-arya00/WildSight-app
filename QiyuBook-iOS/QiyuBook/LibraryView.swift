@@ -53,7 +53,7 @@ struct LibraryView: View {
                                     } onCancel: {
                                         actionRecord = nil
                                     }
-                                    .offset(y: -106)
+                                    .offset(y: -72)
                                     .transition(.scale(scale: 0.92, anchor: .bottom).combined(with: .opacity))
                                     .zIndex(20)
                                 }
@@ -83,23 +83,23 @@ private struct RecordActionPopover: View {
     let onCancel: () -> Void
 
     var body: some View {
-        VStack(spacing: 10) {
-            VStack(alignment: .leading, spacing: 4) {
+        VStack(spacing: 8) {
+            VStack(alignment: .center, spacing: 2) {
                 Text("身份卡操作")
-                    .font(.subheadline.weight(.bold))
+                    .font(.caption.weight(.bold))
                     .foregroundStyle(AppTheme.ink)
-                Text("将从「记录」中删除 \(record.name)。")
-                    .font(.caption)
+                Text(record.name)
+                    .font(.caption2)
                     .foregroundStyle(AppTheme.secondaryText)
-                    .lineLimit(2)
+                    .lineLimit(1)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity)
 
             Button(role: .destructive, action: onDelete) {
                 Text("删除此记录")
-                    .font(.subheadline.weight(.bold))
+                    .font(.caption.weight(.bold))
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 8)
             }
             .buttonStyle(.plain)
             .foregroundStyle(.red)
@@ -110,11 +110,12 @@ private struct RecordActionPopover: View {
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(AppTheme.secondaryText)
         }
-        .padding(14)
-        .frame(width: 210)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .frame(width: 156)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(AppTheme.line, lineWidth: 1)
         )
         .overlay(alignment: .bottom) {
